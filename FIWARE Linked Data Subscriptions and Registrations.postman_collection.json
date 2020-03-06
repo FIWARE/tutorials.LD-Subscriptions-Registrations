@@ -364,6 +364,45 @@
 					"response": []
 				},
 				{
+					"name": "Read from Store 1 Copy",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Link",
+								"value": "<{{datamodels-context.jsonld}}>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{orion}}/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001?",
+							"protocol": "http",
+							"host": [
+								"{{orion}}"
+							],
+							"path": [
+								"ngsi-ld",
+								"v1",
+								"entities",
+								"urn:ngsi-ld:Building:store001"
+							],
+							"query": [
+								{
+									"key": "options",
+									"value": "keyValues",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Forwarded Update",
 					"request": {
 						"method": "PATCH",
@@ -441,25 +480,25 @@
 	],
 	"variable": [
 		{
-			"id": "88ebe0e8-c564-4f8b-8e8d-f0602a90e8cd",
+			"id": "12876df7-048c-4965-9f93-6110fcf48b28",
 			"key": "orion",
 			"value": "localhost:1026",
 			"type": "string"
 		},
 		{
-			"id": "c0447e35-fa2e-494c-a8a6-c0c3bb303bcd",
+			"id": "3193a232-67f8-443e-a61d-dd6b13ce8527",
 			"key": "datamodels-context.jsonld",
 			"value": "https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld",
 			"type": "string"
 		},
 		{
-			"id": "6bb1467b-e80d-4e3b-9fee-3cad73a55809",
+			"id": "5eba9aeb-503b-4810-98f4-ddb09a1b06f1",
 			"key": "device-edge",
 			"value": "localhost:1027",
 			"type": "string"
 		},
 		{
-			"id": "7c675b73-8cc7-43fb-b913-59580e007cf7",
+			"id": "1239dd1e-52cf-4247-8db4-740b90d1b07f",
 			"key": "context-provider",
 			"value": "localhost:3000",
 			"type": "string"
