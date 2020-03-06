@@ -32,7 +32,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"description\": \"Notify me of low stock in Store 001\",\n\t\"type\": \"Subscription\",\n\t\"entities\": [{\"type\": \"Shelf\"}],\n\t\"watchedAttributes\": [\"numberOfItems\"],\n\t\"q\": \"numberOfItems<10;locatedIn==urn:ngsi-ld:Store:001\",\n\t\"notification\": {\n\t\t\"attributes\": [\"numberOfItems\", \"stocks\", \"locatedIn\"],\n\t\t\"format\": \"keyValues\",\n\t\t\"endpoint\": {\n\t\t\t\"uri\": \"http://tutorial:3000/subscription/low-stock-store001\",\n\t\t\t\"accept\": \"application/json\"\n\t\t}\n\t},\n   \"@context\": \"https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld\"\n}\n        "
+							"raw": "{\n\t\"description\": \"Notify me of low stock in Store 001\",\n\t\"type\": \"Subscription\",\n\t\"entities\": [{\"type\": \"Shelf\"}],\n\t\"watchedAttributes\": [\"numberOfItems\"],\n\t\"q\": \"numberOfItems<10;locatedIn==urn:ngsi-ld:Building:store001\",\n\t\"notification\": {\n\t\t\"attributes\": [\"numberOfItems\", \"stocks\", \"locatedIn\"],\n\t\t\"format\": \"keyValues\",\n\t\t\"endpoint\": {\n\t\t\t\"uri\": \"http://tutorial:3000/subscription/low-stock-store001\",\n\t\t\t\"accept\": \"application/json\"\n\t\t}\n\t},\n   \"@context\": \"https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld\"\n}\n        "
 						},
 						"url": {
 							"raw": "http://{{orion}}/ngsi-ld/v1/subscriptions/?",
@@ -81,7 +81,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"description\": \"Notify me of low stock in Store 002\",\n\t\"type\": \"Subscription\",\n\t\"entities\": [{\"type\": \"Shelf\"}],\n\t\"watchedAttributes\": [\"numberOfItems\"],\n\t\"q\": \"numberOfItems<10;locatedIn==urn:ngsi-ld:Store:002\",\n\t\"notification\": {\n\t\t\"attributes\": [\"numberOfItems\", \"stocks\", \"locatedIn\"],\n\t\t\"format\": \"keyValues\",\n\t\t\"endpoint\": {\n\t\t\t\"uri\": \"http://tutorial:3000/subscription/low-stock-store002\",\n\t\t\t\"accept\": \"application/json\"\n\t\t}\n\t},\n   \"@context\": \"https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld\"\n}\n        "
+							"raw": "{\n\t\"description\": \"Notify me of low stock in Store 002\",\n\t\"type\": \"Subscription\",\n\t\"entities\": [{\"type\": \"Shelf\"}],\n\t\"watchedAttributes\": [\"numberOfItems\"],\n\t\"q\": \"numberOfItems<10;locatedIn==urn:ngsi-ld:Building:store002\",\n\t\"notification\": {\n\t\t\"attributes\": [\"numberOfItems\", \"stocks\", \"locatedIn\"],\n\t\t\"format\": \"keyValues\",\n\t\t\"endpoint\": {\n\t\t\t\"uri\": \"http://tutorial:3000/subscription/low-stock-store002\",\n\t\t\t\"accept\": \"application/json\"\n\t\t}\n\t},\n   \"@context\": \"https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld\"\n}\n        "
 						},
 						"url": {
 							"raw": "http://{{orion}}/ngsi-ld/v1/subscriptions/?",
@@ -107,7 +107,7 @@
 					"response": []
 				},
 				{
-					"name": "Create a Subscription ( Store 2) - Low Stock Copy",
+					"name": "Read Subscription Details",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -441,25 +441,25 @@
 	],
 	"variable": [
 		{
-			"id": "3e495f89-8949-40c1-8e4c-5f9958e76f14",
+			"id": "88ebe0e8-c564-4f8b-8e8d-f0602a90e8cd",
 			"key": "orion",
 			"value": "localhost:1026",
 			"type": "string"
 		},
 		{
-			"id": "a264a8b7-183a-4501-9989-5a0c290fffe3",
+			"id": "c0447e35-fa2e-494c-a8a6-c0c3bb303bcd",
 			"key": "datamodels-context.jsonld",
 			"value": "https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld",
 			"type": "string"
 		},
 		{
-			"id": "b0126ccc-c53c-4736-bbed-0f611c53361c",
+			"id": "6bb1467b-e80d-4e3b-9fee-3cad73a55809",
 			"key": "device-edge",
 			"value": "localhost:1027",
 			"type": "string"
 		},
 		{
-			"id": "edac4f35-3d26-4e83-9722-1ac821080ab3",
+			"id": "7c675b73-8cc7-43fb-b913-59580e007cf7",
 			"key": "context-provider",
 			"value": "localhost:3000",
 			"type": "string"

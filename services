@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#  Command Line Interface to start all services associated with the Getting-Started Tutorial
+#  Command Line Interface to start all services associated with the Tutorial
 #
 #  For this tutorial the commands are merely a convenience script to run docker-compose
 #
@@ -37,15 +37,6 @@ waitForScorpio () {
 	done
 }
 
-waitForIoTAgent () {
-	echo -e "\n⏳ Waiting for \033[1;36mIoT-Agent\033[0m to be available\n"
-	while [ `docker run --network fiware_default --rm curlimages/curl -s -o /dev/null -w %{http_code} 'http://iot-agent:4041/version'` -eq 000 ]
-	do 
-	  echo -e "IoT Agent HTTP state: " `curl -s -o /dev/null -w %{http_code} 'http://localhost:4041/version'` " (waiting for 200)"
-	  sleep 1
-	done
-}
-
 loadData () {
 	echo ""
 	docker run --rm -v $(pwd)/import-data:/import-data \
@@ -53,15 +44,11 @@ loadData () {
 		-e CONTEXT_BROKER=orion:1026 \
 		-e TUTORIAL_DATA_MODELS_CONTEXT="https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld" \
 		--entrypoint /bin/ash curlimages/curl import-data
-	waitForIoTAgent
-	docker run --rm -v $(pwd)/provision-devices:/provision-devices \
-		--network fiware_default \
-		--entrypoint /bin/ash curlimages/curl provision-devices
 	echo ""
 }
 
 addDatabaseIndex () {
-	printf "Adding appropriate \033[1mMongoDB\033[0m indexes for \033[1;34mOrion\033[0m  ..."
+	printf "Adding appropriate \033[1mMongoDB\033[0m indexes for \033[1;34mOrion-LD\033[0m  ..."
 	docker exec  db-mongo mongo --eval '
 	conn = new Mongo();db.createCollection("orion");
 	db = conn.getDB("orion");
@@ -77,19 +64,6 @@ addDatabaseIndex () {
 	db.entities.createIndex({"_id.servicePath": 1, "_id.id": 1, "_id.type": 1}, {unique: true});
 	db.entities.createIndex({"_id.type": 1}); 
 	db.entities.createIndex({"_id.id": 1});' > /dev/null
-	echo -e " \033[1;32mdone\033[0m"
-
-	printf "Adding appropriate \033[1mMongoDB\033[0m indexes for \033[1;36mIoT-Agent\033[0m  ..."
-	docker exec  db-mongo mongo --eval '
-	conn = new Mongo();
-	db = conn.getDB("iotagentul");
-	db.createCollection("devices");
-	db.devices.createIndex({"_id.service": 1, "_id.id": 1, "_id.type": 1});
-	db.devices.createIndex({"_id.type": 1}); 
-	db.devices.createIndex({"_id.id": 1});
-	db.createCollection("groups");
-	db.groups.createIndex({"_id.resource": 1, "_id.apikey": 1, "_id.service": 1});
-	db.groups.createIndex({"_id.type": 1});' > /dev/null
 	echo -e " \033[1;32mdone\033[0m"
 }
 
@@ -112,14 +86,9 @@ case "${command}" in
         ;;
     "orion")
 		stoppingContainers
-		echo -e "Starting five containers \033[1;34mOrion-LD\033[0m, \033[1;34mOrion-v2\033[0m, \033[1;36mIoT-Agent\033[0m, \033[1mTutorial\033[0m and a \033[1mMongoDB\033[0m database."
+		echo -e "Starting three containers \033[1;34mOrion-LD\033[0m, \033[1mTutorial\033[0m and a \033[1mMongoDB\033[0m database."
 		echo -e "- \033[1;34mOrion-LD\033[0m is an \033[1mNGSI-LD\033[0m context broker servicing the Supermarket"
-		echo -e "- \033[1;34mOrion-v2\033[0m is an \033[1mNGSI-v2\033[0m context broker servicing IoT Devices on the edge"
-		echo -e "- \033[1;36mIoT-Agent\033[0m is translating from the  UltraLight Protocol to \033[1mNGSI-v2\033[0m"
-		echo -e "- \033[1mTutorial\033[0m" 
-		echo -e "    - displays a web app to manipulate the \033[1mNGSI-LD\033[0m context directly"
-		echo -e "    - acts as a bridge between \033[1mNGSI-v2\033[0m and \033[1mNGSI-LD\033[0m"
-		echo -e "    - acts as a series of dummy IoT Sensors over HTTP"
+		echo -e "- \033[1mTutorial\033[0m used as a content provider proxying other web services"
 		echo ""
 		docker-compose --log-level ERROR -f docker-compose/orion-ld.yml -p fiware up -d --remove-orphans
 		addDatabaseIndex
@@ -130,14 +99,9 @@ case "${command}" in
 		;;
 	"scorpio")
 		stoppingContainers 
-		echo -e "Starting seven containers \033[1;34mScorpio\033[0m, \033[1mKafka\033[0m, \033[1mZookeeper\033[0m, \033[1;34mOrion-v2\033[0m, \033[1;36mIoT-Agent\033[0m, \033[1mTutorial\033[0m and a \033[1mPostgres\033[0m database."
+		echo -e "Starting five containers \033[1;34mScorpio\033[0m, \033[1mKafka\033[0m, \033[1mZookeeper\033[0m, \033[1mTutorial\033[0m and a \033[1mPostgres\033[0m database."
 		echo -e "- \033[1;34mScorpio\033[0m is an \033[1mNGSI-LD\033[0m context broker servicing the Supermarket"
-		echo -e "- \033[1;34mOrion-v2\033[0m is an \033[1mNGSI-v2\033[0m context broker servicing IoT Devices on the edge"
-		echo -e "- \033[1;36mIoT-Agent\033[0m is translating from the  UltraLight Protocol to \033[1mNGSI-v2\033[0m"
-		echo -e "- \033[1mTutorial\033[0m" 
-		echo -e "    - displays a web app to manipulate the \033[1mNGSI-LD\033[0m context directly"
-		echo -e "    - acts as a bridge between \033[1mNGSI-v2\033[0m and \033[1mNGSI-LD\033[0m"
-		echo -e "    - acts as a series of dummy IoT Sensors over HTTP"
+		echo -e "- \033[1mTutorial\033[0m used as a content provider proxying other web services"
 		echo ""
 		docker-compose --log-level ERROR -f docker-compose/scorpio-aaio.yml -p fiware up -d --remove-orphans
 		displayServices scorpio
@@ -159,6 +123,3 @@ case "${command}" in
 		exit 127;
 		;;
 esac
-
-
-
