@@ -480,25 +480,25 @@
 	],
 	"variable": [
 		{
-			"id": "12876df7-048c-4965-9f93-6110fcf48b28",
+			"id": "b9c415f2-e460-4c48-968b-e83b2c44a558",
 			"key": "orion",
 			"value": "localhost:1026",
 			"type": "string"
 		},
 		{
-			"id": "3193a232-67f8-443e-a61d-dd6b13ce8527",
+			"id": "a8eac772-93c2-43e5-a49c-8e9b655d48d0",
 			"key": "datamodels-context.jsonld",
 			"value": "https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld",
 			"type": "string"
 		},
 		{
-			"id": "5eba9aeb-503b-4810-98f4-ddb09a1b06f1",
+			"id": "697e3bfa-ec68-484a-bec8-c8de8d0f1ec2",
 			"key": "device-edge",
 			"value": "localhost:1027",
 			"type": "string"
 		},
 		{
-			"id": "1239dd1e-52cf-4247-8db4-740b90d1b07f",
+			"id": "bc72852c-8ff7-43e6-9c5a-89533c4e941f",
 			"key": "context-provider",
 			"value": "localhost:3000",
 			"type": "string"

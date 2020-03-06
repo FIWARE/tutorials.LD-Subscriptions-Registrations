@@ -203,21 +203,21 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 ```console
 curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 -H 'Content-Type: application/json' \
+-H 'Link: <https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
 --data-raw '{
-  "description": "Notify me of low stock in Store 002",
+  "description": "LD Notify me of low stock in Store 002",
   "type": "Subscription",
   "entities": [{"type": "Shelf"}],
   "watchedAttributes": ["numberOfItems"],
   "q": "numberOfItems<10;locatedIn==urn:ngsi-ld:Building:store002",
   "notification": {
     "attributes": ["numberOfItems", "stocks", "locatedIn"],
-    "format": "keyValues",
+    "format": "normalized",
     "endpoint": {
       "uri": "http://tutorial:3000/subscription/low-stock-store002",
-      "accept": "application/json"
+      "accept": "application/ld+json"
     }
-  },
-   "@context": "https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld"
+  }
 }'
 ```
 
