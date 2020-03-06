@@ -179,6 +179,27 @@ Goto `http://localhost:3000/app/store/urn:ngsi-ld:Building:store001` to display 
 
 ### Create a Subscription (Store 1) - Low Stock
 
+NGSI-LD subscriptions can be set up using the  `/ngsi-ld/v1/subscriptions/` endpoint and in a similar manner to the NGSI-v2
+`/v2/subscriptions` endpoint. The payload body is slightly different however. Firstly the linked data `@context` must
+be present either as an attribute or in the `Link` header. If the `@context` is placed in the body the `Context-Type` header 
+must state that the payload is `application/ld+json` - i.e. Linked Data plus JSON. The supplied `@context` will also be used
+when making notifications as part of the notification request.
+
+The `type` of the NGSI-LD subscription request is always `type=Subscription`.  The structure of the subscription has changed.
+When setting up a subscription, there is no longer a  separate `subject` section to the payload, entities to watch and trigger 
+conditions are now set at the same level as the `description` of the subscription.
+
+* `condition.attrs` has been moved up a level and renamed to `watchedAttributes`
+* `condition.expression` has been moved up a level and renamed to `q`
+
+The `notification` section of the body states that once the conditions of the subscription have been met, a POST request 
+containing all affected Shelf entities will be sent to the URL `http://tutorial:3000/subscription/low-stock-store001`.
+It is now possible to amend the notification payload by requesting `notification.format=keyValues` and remove the `@context` from the
+notification body by stating `notification.endpoint.accept=application/json`. The `@context` is not lost, it is merely passed as
+a `Link` header. In summary, all of the flags within a subscription work in the same manner  as a GET request 
+to the context broker itself. If no flags are set, a full NGSI-LD respsonse including the `@context` is returned by default, and 
+the payload can be reduced and amended by adding in further restrictions. 
+
 #### :one: Request:
 
 ```console
@@ -203,6 +224,10 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 ```
 
 ### Create a Subscription (Store 2) - Low Stock
+
+This second request fires notifications to a different endpoint (URL `http://tutorial:3000/subscription/low-stock-store002`.)
+The `notification.format=normalized` and `notification.endpoint.accept=application/ld+json` will ensure that the `@context`
+is passed in the body of the notification request and that the payload will consist of the expanded entities.
 
 #### :two: Request:
 
