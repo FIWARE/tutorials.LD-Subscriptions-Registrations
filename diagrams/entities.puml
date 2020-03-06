@@ -1,0 +1,63 @@
+@startuml
+skinparam object {
+  BackgroundColor #f5f5f5
+  ArrowColor #4c4c4c
+  BorderColor #233c68
+}
+
+object Product
+
+Product : id 
+Product : name 
+Product : price 
+Product : size 
+
+
+object StockOrder
+
+StockOrder : id 
+StockOrder : orderedProduct 
+StockOrder : requestedFor 
+StockOrder : requestedBy
+StockOrder : orderDate 
+StockOrder : stockCount 
+
+
+object Building
+
+Building : id 
+Building : name 
+Building : address 
+Building : location
+Building : category
+Building : furniture
+Building : tweets
+
+note right of Building #PowderBlue
+  <size:10><b>Twitter API</b> supplies</size>
+  * <size:10>tweets</size>
+end note 
+
+object Shelf
+
+Shelf : id 
+Shelf : location 
+Shelf : locatedIn
+Shelf : installedBy 
+Shelf : maxCapacity
+Shelf : numberOfItems
+
+object Person
+
+Person : id 
+Person : name
+
+Shelf "1 " ---> "1 " Building : "     locatedIn     "
+Shelf " 1" --->  " 1  " Person : "installedBy"
+Building "1 " -left-> " *  " Shelf : "     furniture     "
+Shelf "1   " ---> "1 " Product : " stocks"
+
+StockOrder " 1 " -left-> "1 " Building : "  requestedFor  "
+StockOrder "1 " ---> "1" Person : "requestedBy"
+StockOrder "1 " ---> "1  " Product : "orderedProduct"
+@enduml
