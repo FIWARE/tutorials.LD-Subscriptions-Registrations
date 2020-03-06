@@ -62,15 +62,15 @@ between the various components has changed.
 
 ## Entities within a stock management system
 
-The relationship between our entities is defined as shown:
+The relationship between our Linked Data entities is defined as shown, in addition to the existing data, the `tweets` attribute will
+be supplied by a *Context Provider*. In all other respects this model remains the same as the [previous tutorial](https://github.com/FIWARE/tutorials.Working-with-Linked-Data/) :
 
 ![](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/entities.png)
 
 ## Stock Management frontend
 
-In the previous [tutorial](https://github.com/FIWARE/tutorials.Working-with-Linked-Data/), the simple Node.js Express
-application was updated to use NGSI-LD. This tutorial will use the monitor page to watch the status of recent requests,
-and a store page to buy products. Once the services are running these pages can be accessed from the following URLs:
+The simple Node.js Express application has updated to use NGSI-LD in the previous [tutorial](https://github.com/FIWARE/tutorials.Working-with-Linked-Data/).
+We will use the monitor page to watch the status of recent requests, and a two store pages to buy products. Once the services are running these pages can be accessed from the following URLs:
 
 #### Event Monitor
 
@@ -442,20 +442,41 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:s
 }
 ```
 
+The same response data can be seen within the supermarker application itself. In practice this data has been created via a
+series of requests - the context broker is responsibile for the `urn:ngsi-ld:Building:store001` data, however it checks to
+see if any further information can be provided from other sources. In our case the `CSourceRegistration` indicates that one
+further attribute _may_ be available. The broker then requests `tweets` information from the context provider, and provided
+that it responds in a timely manner, the `tweets` information is added to the resultant payload.
+
+The supermarket application displays the received data on screen within the supermarket application itself:
+
 ![tweets-1](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/tweets-1.png)
 
 
 ### Read direct from the Context Provider
 
+Every context-provider must stand by a fixed contract. At a minimum must be able to respond to varieties of the 
+`/ngsi-ld/v1/entities/<entity-id>` GET request. If the registration is limited to certain properties, this
+request will also contain an `attrs` parameter in the query string.
+
+Dependent upon the use case of the context-provider, it may or may not need to be able to interpret JSON-LD `@context` -
+in this case a request is merely returning the full `tweets` attribute.
+
+The same request is made by the context broker itself when querying for registered attributes
+
+
 #### :seven: Request:
 
 ```console
-curl -L -X GET 'http://localhost:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001' \
+curl -L -X GET 'http://localhost:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001?attrs=tweets' \
 -H 'Link: <https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
 -H 'Content-Type: application/ld+json'
 ```
 
 #### Response:
+
+As can be seen the `@context` has been returned in the request (since the `Content-Type` header was set). The rest of the response resembles
+any standard NGSI-LD request.
 
 ```jsonld
 {
@@ -478,6 +499,9 @@ curl -L -X GET 'http://localhost:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi
 ```
 
 ### Direct update of the Context Provider
+
+For a read-write interface it is also possible to amend context data by making a PATCH request to the relevant `ngsi-ld/v1/entities/<entity-id>/attrs` endpoint.
+
 
 #### :eight: Request:
 
@@ -520,11 +544,25 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:s
 }
 ```
 
+Since the context provider is responsible for supplying `tweets` information, changes in the context provider will always be
+reflected in requests to the context-broker itself. The supermarket application is calling the context broker for context
+regardless of origin, so the updated `tweets` data are displayed on screen within the supermarket application itself:
+
 ![tweets-2](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/tweets-2.png)
+
+The context broker is therefore able to return a complete holistic picture of the current state of the world.
 
 ### Forwarded Update
 
 #### :one::zero: Request:
+
+A PATCH request to the context broker ( either `ngsi-ld/v1/entities/<entity-id>/` or `ngsi-ld/v1/entities/<entity-id>/attrs`) will be forwarded to
+the registered context provider if a registration is found. It is therefore possible to alter the state of a context-provider as a side effect.
+Of course, not all context providers are necessarily read-write, so attempting to change the attributes of forwarded context may not be fully
+respected.
+
+In this case however a request to PATCH  `ngsi-ld/v1/entities/<entity-id>` will be successfully forwarded as a series of 
+`ngsi-ld/v1/entities/<entity-id>/attrs` requests for each regsitered attribute that is found in the registration.
 
 ```console
 curl -L -X PATCH 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001/attrs/tweets' \
@@ -541,6 +579,8 @@ curl -L -X PATCH 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building
 
 
 #### :one::one: Request:
+
+The result of the previous operation can be seen by retrieving the whole entity using a GET request.
 
 ```console
 curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001?attrs=tweets&options=keyValues' \
@@ -562,6 +602,8 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:s
     ]
 }
 ```
+
+As can be seen, the updated `tweets` data is also displayed within the supermarket application itself:
 
 ![tweets-3](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/tweets-3.png)
 
