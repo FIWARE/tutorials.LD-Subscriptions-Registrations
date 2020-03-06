@@ -122,7 +122,7 @@ curl -s -o /dev/null -X POST \
       "value": {"type": "Point", "coordinates": [13.3986112,52.554699]}
     },
     "maxCapacity": {"type": "Property", "value": 50},
-    "numberOfItems": {"type": "Property", "value": 50},
+    "numberOfItems": {"type": "Property", "value": 15},
     "name": {"type": "Property", "value": "Corner Unit"},
     "stocks": {
       "type": "Relationship", "object": "urn:ngsi-ld:Product:001"
@@ -148,7 +148,7 @@ curl -s -o /dev/null -X POST \
     },
     "maxCapacity": {"type": "Property", "value": 100},
     "name": {"type": "Property", "value": "Wall Unit 1"},
-    "numberOfItems": {"type": "Property", "value": 50},
+    "numberOfItems": {"type": "Property", "value": 15},
     "stocks": {
       "type": "Relationship", "object": "urn:ngsi-ld:Product:003"
     },
@@ -173,7 +173,7 @@ curl -s -o /dev/null -X POST \
     },
     "maxCapacity": {"type": "Property", "value": 100},
     "name": {"type": "Property", "value": "Wall Unit 2"},
-    "numberOfItems": {"type": "Property", "value": 50},
+    "numberOfItems": {"type": "Property", "value": 15},
     "stocks": {
       "type": "Relationship", "object": "urn:ngsi-ld:Product:004"
     },
@@ -273,7 +273,7 @@ curl -s -o /dev/null -X POST \
       "value": {"type": "Point", "coordinates": [13.4447221,52.503164]}
     },
     "maxCapacity": {"type": "Property", "value": 100},
-    "numberOfItems": {"type": "Property", "value": 50},
+    "numberOfItems": {"type": "Property", "value": 15},
     "name": {"type": "Property", "value": "Wall Unit"},
     "stocks": {
       "type": "Relationship", "object": "urn:ngsi-ld:Product:008"
@@ -298,7 +298,7 @@ curl -s -o /dev/null -X POST \
       "value": {"type": "Point", "coordinates": [13.4447221,52.503164]}
     },
     "maxCapacity": {"type": "Property", "value": 100},
-    "numberOfItems": {"type": "Property", "value": 50},
+    "numberOfItems": {"type": "Property", "value": 15},
     "name": {"type": "Property", "value": "Wall Unit 2"},
     "stocks": {
       "type": "Relationship", "object": "urn:ngsi-ld:Product:009"
@@ -323,7 +323,7 @@ curl -s -o /dev/null -X POST \
       "value": {"type": "Point", "coordinates": [13.444711,52.503122]}
     },
     "maxCapacity": {"type": "Property", "value": 50},
-    "numberOfItems": {"type": "Property", "value": 50},
+    "numberOfItems": {"type": "Property", "value": 15},
     "name": {"type": "Property", "value": "Corner Unit"},
     "stocks": {
       "type": "Relationship", "object": "urn:ngsi-ld:Product:009"
