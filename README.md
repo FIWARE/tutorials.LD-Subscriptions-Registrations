@@ -55,7 +55,7 @@ As a brief reminder, within a distributed system, subscriptions inform a third p
 context data has occurred (and the component needs to take further actions), whereas registrations tell the context
 broker that additional context information is available from another source.
 
-Both of these operations require that the receiving component understands the requests it receives, and is capable of
+Both of these operations require that the receiving component fully understands the requests it receives, and is capable of
 creating and interpreting the resultant payloads. The differences here between NGSI-v2 and NGSI-LD operations is small,
 but there has been a minor amendment to facilite the incorporation of linked data concepts, and therefore the contract
 between the various components has changed.
@@ -173,23 +173,376 @@ Goto `http://localhost:3000/app/store/urn:ngsi-ld:Building:store001` to display 
 
 ### Create a Subscription (Store 1) - Low Stock
 
+#### :one: Request:
+
+```console
+curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
+-H 'Content-Type: application/ld+json' \
+--data-raw '{
+  "description": "Notify me of low stock in Store 001",
+  "type": "Subscription",
+  "entities": [{"type": "Shelf"}],
+  "watchedAttributes": ["numberOfItems"],
+  "q": "numberOfItems<10;locatedIn==urn:ngsi-ld:Building:store001",
+  "notification": {
+    "attributes": ["numberOfItems", "stocks", "locatedIn"],
+    "format": "keyValues",
+    "endpoint": {
+      "uri": "http://tutorial:3000/subscription/low-stock-store001",
+      "accept": "application/json"
+    }
+  },
+   "@context": "https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld"
+}'
+```
+
 ### Create a Subscription (Store 2) - Low Stock
 
+#### :two: Request:
+
+```console
+curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "description": "Notify me of low stock in Store 002",
+  "type": "Subscription",
+  "entities": [{"type": "Shelf"}],
+  "watchedAttributes": ["numberOfItems"],
+  "q": "numberOfItems<10;locatedIn==urn:ngsi-ld:Building:store002",
+  "notification": {
+    "attributes": ["numberOfItems", "stocks", "locatedIn"],
+    "format": "keyValues",
+    "endpoint": {
+      "uri": "http://tutorial:3000/subscription/low-stock-store002",
+      "accept": "application/json"
+    }
+  },
+   "@context": "https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld"
+}'
+```
+
 ### Read Subscription Details
+
+#### :three: Request:
+
+```console
+curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
+-H 'Content-Type: application/json'
+```
+
+#### Response:
+
+```jsonld
+[
+    {
+        "id": "urn:ngsi-ld:Subscription:5e62405ee232da3a07b5fa7f",
+        "type": "Subscription",
+        "description": "Notify me of low stock in Store 001",
+        "entities": [
+            {
+                "type": "Shelf"
+            }
+        ],
+        "watchedAttributes": [
+            "numberOfItems"
+        ],
+        "q": "https://fiware.github.io/tutorials.Step-by-Step/schema/numberOfItems<10;https://fiware.github.io/tutorials.Step-by-Step/schema/locatedIn==urn:ngsi-ld:Building:store001",
+        "notification": {
+            "attributes": [
+                "numberOfItems",
+                "stocks",
+                "locatedIn"
+            ],
+            "format": "keyValues",
+            "endpoint": {
+                "uri": "http://tutorial:3000/subscription/low-stock-store001",
+                "accept": "application/json"
+            }
+        },
+        "@context": "https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld"
+    },
+    {
+        "id": "urn:ngsi-ld:Subscription:5e624063e232da3a07b5fa80",
+        "type": "Subscription",
+        "description": "Notify me of low stock in Store 002",
+        "entities": [
+            {
+                "type": "Shelf"
+            }
+        ],
+        "watchedAttributes": [
+            "numberOfItems"
+        ],
+        "q": "https://fiware.github.io/tutorials.Step-by-Step/schema/numberOfItems<10;https://fiware.github.io/tutorials.Step-by-Step/schema/locatedIn==urn:ngsi-ld:Building:store002",
+        "notification": {
+            "attributes": [
+                "numberOfItems",
+                "stocks",
+                "locatedIn"
+            ],
+            "format": "keyValues",
+            "endpoint": {
+                "uri": "http://tutorial:3000/subscription/low-stock-store002",
+                "accept": "application/json"
+            }
+        },
+        "@context": "https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld"
+    }
+]
+```
 
 ## Using Registrations with NGSI-LD
 
 ### Create a Registration
 
+#### :four: Request:
+
+```console
+curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/csourceRegistrations/' \
+-H 'Content-Type: application/json' \
+-H 'Link: <https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
+--data-raw ' {
+    "type": "ContextSourceRegistration",
+    "information": [
+        {
+            "entities": [
+                {
+                    "type": "Building",
+                    "id": "urn:ngsi-ld:Building:store001"
+                }
+            ],
+            "properties": [
+                "tweets"
+            ]
+        }
+    ],
+    "endpoint": "http://context-provider:3000/static/tweets"
+}'
+```
+
 ### Read Registration Details
+
+#### :five: Request:
+
+```console
+curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/csourceRegistrations/' \
+-H 'Accept: application/ld+json' \
+-H 'Link: <https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
+```
+
+#### Response:
+
+```jsonld
+[
+    {
+        "@context": "https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld",
+        "id": "urn:ngsi-ld:ContextSourceRegistration:5e6242179c26be5aef9991d4",
+        "type": "ContextSourceRegistration",
+        "endpoint": "http://context-provider:3000/static/tweets",
+        "information": [
+            {
+                "entities": [
+                    {
+                        "id": "urn:ngsi-ld:Building:store001",
+                        "type": "Building"
+                    }
+                ],
+                "properties": [
+                    "tweets"
+                ]
+            }
+        ]
+    }
+]
+```
 
 ### Read from Store 1
 
+#### :six: Request:
+
+```console
+curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001' \
+-H 'Link: <https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
+-H 'Content-Type: application/json'
+```
+
+#### Response:
+
+```jsonld
+{
+    "@context": "https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld",
+    "id": "urn:ngsi-ld:Building:store001",
+    "type": "Building",
+    "furniture": {
+        "type": "Relationship",
+        "object": [
+            "urn:ngsi-ld:Shelf:unit001",
+            "urn:ngsi-ld:Shelf:unit002",
+            "urn:ngsi-ld:Shelf:unit003"
+        ]
+    },
+    "address": {
+        "type": "Property",
+        "value": {
+            "streetAddress": "Bornholmer Straße 65",
+            "addressRegion": "Berlin",
+            "addressLocality": "Prenzlauer Berg",
+            "postalCode": "10439"
+        },
+        "verified": {
+            "type": "Property",
+            "value": true
+        }
+    },
+    "name": {
+        "type": "Property",
+        "value": "Bösebrücke Einkauf"
+    },
+    "category": {
+        "type": "Property",
+        "value": "commercial"
+    },
+    "location": {
+        "type": "GeoProperty",
+        "value": {
+            "type": "Point",
+            "coordinates": [
+                13.3986,
+                52.5547
+            ]
+        }
+    },
+    "tweets": {
+        "type": "Property",
+        "value": [
+            "It has great practical value – you can wrap it around you for warmth as you bound across the cold moons of Jaglan Beta;",
+            "You can lie on it on the brilliant marble-sanded beaches of Santraginus V, inhaling the heady sea vapours;",
+            "You can sleep under it beneath the stars which shine so redly on the desert world of Kakrafoon;",
+            "Use it to sail a mini raft down the slow heavy river Moth;",
+            "Wet it for use in hand-to-hand-combat;",
+            "Wrap it round your head to ward off noxious fumes or to avoid the gaze of the Ravenous Bugblatter Beast of Traal  (a mindboggingly stupid animal, it assumes that if you can’t see it, it can’t see you – daft as a bush, but very, very ravenous);",
+            "You can wave your towel in emergencies as a distress signal, and of course dry yourself off with it if it still seems to be clean enough."
+        ]
+    }
+}
+```
+
+
 ### Read direct from the Context Provider
+
+#### :seven: Request:
+
+```console
+curl -L -X GET 'http://localhost:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001' \
+-H 'Link: <https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
+-H 'Content-Type: application/ld+json'
+```
+
+#### Response:
+
+```jsonld
+{
+    "@context": "https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld",
+    "id": "urn:ngsi-ld:Building:store001",
+    "type": "Building",
+    "tweets": {
+        "type": "Property",
+        "value": [
+            "It has great practical value – you can wrap it around you for warmth as you bound across the cold moons of Jaglan Beta;",
+            "You can lie on it on the brilliant marble-sanded beaches of Santraginus V, inhaling the heady sea vapours;",
+            "You can sleep under it beneath the stars which shine so redly on the desert world of Kakrafoon;",
+            "Use it to sail a mini raft down the slow heavy river Moth;",
+            "Wet it for use in hand-to-hand-combat;",
+            "Wrap it round your head to ward off noxious fumes or to avoid the gaze of the Ravenous Bugblatter Beast of Traal  (a mindboggingly stupid animal, it assumes that if you can’t see it, it can’t see you – daft as a bush, but very, very ravenous);",
+            "You can wave your towel in emergencies as a distress signal, and of course dry yourself off with it if it still seems to be clean enough."
+        ]
+    }
+}
+```
 
 ### Direct update of the Context Provider
 
+#### :eight: Request:
+
+```console
+curl -L -X PATCH 'http://localhost:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001/attrs' \
+-H 'Link: <https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "tweets": {
+    "type": "Property",
+    "value": [
+      "Space is big.",
+      "You just won'\''t believe how vastly, hugely, mind-bogglingly big it is.",
+      "I mean, you may think it'\''s a long way down the road to the chemist'\''s, but that'\''s just peanuts to space."
+    ]
+  }
+}'
+```
+
+
+#### :nine: Request:
+
+```console
+curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001?attrs=tweets&options=keyValues' \
+-H 'Link: <https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
+```
+
+#### Response:
+
+```jsonld
+{
+    "@context": "https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld",
+    "id": "urn:ngsi-ld:Building:store001",
+    "type": "Building",
+    "tweets": [
+        "Space is big.",
+        "You just won't believe how vastly, hugely, mind-bogglingly big it is.",
+        "I mean, you may think it's a long way down the road to the chemist's, but that's just peanuts to space."
+    ]
+}
+```
+
 ### Forwarded Update
+
+#### :one::zero: Request:
+
+```console
+curl -L -X PATCH 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001/attrs/tweets' \
+-H 'Link: <https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "type": "Property",
+  "value": [
+    "This must be Thursday",
+    "I never could get the hang of Thursdays."
+  ]
+} '
+```
+
+
+#### :one::one: Request:
+
+```console
+curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001?attrs=tweets&options=keyValues' \
+-H 'Link: <https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
+-H 'Content-Type: application/json'
+```
+
+
+#### Response:
+
+```jsonld
+{
+    "@context": "https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld",
+    "id": "urn:ngsi-ld:Building:store001",
+    "type": "Building",
+    "tweets": [
+        "This must be Thursday",
+        "I never could get the hang of Thursdays."
+    ]
+}
+```
 
 ---
 
