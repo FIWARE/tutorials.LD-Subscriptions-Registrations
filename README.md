@@ -82,7 +82,13 @@ The event monitor can be found at: `http://localhost:3000/app/monitor`
 
 Store001 can be found at: `http://localhost:3000/app/store/urn:ngsi-ld:Building:store001`
 
-![Store](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/store1.png)
+![Store](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/store.png)
+
+#### Store 002
+
+Store002 can be found at: `http://localhost:3000/app/store/urn:ngsi-ld:Building:store002`
+
+![Store2](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/store2.png)
 
 # Prerequisites
 
@@ -291,6 +297,15 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 ]
 ```
 
+### Retrieving Subscription Events
+
+
+![low-stock](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/low-stock-warehouse.png)
+
+![low-stock-json](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/low-stock-monitor.png)
+
+![low-stock-ld](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/low-stock-monitor-ld.png)
+
 ## Using Registrations with NGSI-LD
 
 ### Create a Registration
@@ -427,6 +442,8 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:s
 }
 ```
 
+![tweets-1](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/tweets-1.png)
+
 
 ### Read direct from the Context Provider
 
@@ -503,6 +520,8 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:s
 }
 ```
 
+![tweets-2](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/tweets-2.png)
+
 ### Forwarded Update
 
 #### :one::zero: Request:
@@ -543,6 +562,8 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:s
     ]
 }
 ```
+
+![tweets-3](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/tweets-3.png)
 
 ---
 
