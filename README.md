@@ -58,7 +58,7 @@ broker that additional context information is available from another source.
 Both of these operations require that the receiving component fully understands the requests it receives, and is capable of
 creating and interpreting the resultant payloads. The differences here between NGSI-v2 and NGSI-LD operations is small,
 but there has been a minor amendment to facilite the incorporation of linked data concepts, and therefore the contract
-between the various components has changed.
+between the various components has changed to include minor updates.
 
 ## Entities within a stock management system
 
@@ -254,14 +254,19 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 
 ### Read Subscription Details
 
+Subscription details can be read by making a GET request to the `/ngsi-ld/v1/subscriptions/`. All subscription CRUD actions continue to be mapped to the
+same HTTP verbs as before. Adding  the `Accept: application/json` will remove the `@context` element from the response body.
+
 #### :three: Request:
 
 ```console
-curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
--H 'Content-Type: application/json'
+curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/subscriptions/' 
 ```
 
 #### Response:
+
+The response consists of the details of the subscriptions within the system.  The parameters within the `q` attribute have been expanded to use the full URIs,
+as internally the broker consistently uses long names. The differences between the payloads offered by the two subscriptions will be discussed below.
 
 ```jsonld
 [
@@ -324,12 +329,29 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 
 ### Retrieving Subscription Events
 
+Open two tabs on a browser. Goto the event monitor (`http://localhost:3000/app/monitor`) to see the payloads that are received when a subscription fires,
+and then go to store001  (`http://localhost:3000/app/store/urn:ngsi-ld:Building:store001`) and buy beer until less than 10 items are in stock. The low stock message should be displayed
+on screen.
 
 ![low-stock](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/low-stock-warehouse.png)
 
+`low-stock-store001` is fired when the Products on the shelves within Store001 are getting low, the subscription payload can be seen below:
+
 ![low-stock-json](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/low-stock-monitor.png)
 
+The data within the payload consists of key-value pairs of the attributes which were specified in the request. This is because the subscription
+was created using the `format=keyValues` attribute. The `@context` is not present in the payload body since `endpoint.accept=application/json` was
+set. The effect is to return a `data` array in a very similar format to the `v2/subscription/` payload.  In addition to the `data` array, the
+`subscriptionId` is included in the response, along with a `notifiedAt` element which describes when the notification was fired.
+
+Now goto  go to store002  (`http://localhost:3000/app/store/urn:ngsi-ld:Building:store002`) and buy beer until less than 10 items are in stock. 
+The low stock message is once again displayed on screen, the payload can be seen within the event monitor.
+
 ![low-stock-ld](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/low-stock-monitor-ld.png)
+
+The second subscription has been set up to pass the full NGSI-LD payload along with the `@context`. This has been achieved by using the 
+using the `format=normalized` attribute within the subscription itself, as well as setting `endpoint.accept=application/ld+json`, so that the `@context`
+is also passed with each entitiy.
 
 ## Using Registrations with NGSI-LD
 
