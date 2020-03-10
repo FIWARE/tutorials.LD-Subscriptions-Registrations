@@ -94,7 +94,7 @@ services:
       - "DEBUG=tutorial:*"
       - "WEB_APP_PORT=${TUTORIAL_APP_PORT}" # Port used by the content provider proxy and web-app for viewing data
       - "NGSI_VERSION=ngsi-ld"
-      - "CONTEXT_BROKER=http://orion:${ORION_LD_PORT}/ngsi-ld/v1" # URL of the context broker to update context
+      - "CONTEXT_BROKER=http://scorpio:${SCORPIO_PORT}/ngsi-ld/v1" # URL of the context broker to update context
       - "DEVICE_BROKER=http://devices:${ORION_EDGE_PORT}/v2" # URL of the device's context broker to update context
       - "NGSI_LD_PREFIX="
       

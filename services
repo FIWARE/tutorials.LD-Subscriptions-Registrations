@@ -29,11 +29,13 @@ waitForScorpio () {
 	  echo -e "Context Broker HTTP state: " `curl -s -o /dev/null -w %{http_code} 'http://localhost:9090/scorpio/v1/info/'` " (waiting for 500)"
 	  sleep 30
 	done
+	waitSeconds=30
 	echo -e "\n⏳ Waiting for all \033[1;34mScorpio\033[0m services to be fully available\n"
 	while [ `docker run --network fiware_default --rm curlimages/curl -s -o /dev/null -w %{http_code} 'http://scorpio:9090/scorpio/v1/info/'` -eq 500 ]
 	do 
 	  echo -e "Context Broker HTTP state: " `curl -s -o /dev/null -w %{http_code} 'http://localhost:9090/scorpio/v1/info/'` " (waiting for 200)"
-	  sleep 30
+	  waitSeconds=$((waitSeconds+5))
+	  sleep waitSeconds
 	done
 }
 
@@ -41,7 +43,7 @@ loadData () {
 	echo ""
 	docker run --rm -v $(pwd)/import-data:/import-data \
 		--network fiware_default \
-		-e CONTEXT_BROKER=orion:1026 \
+		-e CONTEXT_BROKER=${CONTEXT_BROKER} \
 		-e TUTORIAL_DATA_MODELS_CONTEXT="https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld" \
 		--entrypoint /bin/ash curlimages/curl import-data
 	echo ""
