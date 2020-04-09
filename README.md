@@ -375,22 +375,22 @@ All registrations can be subdivided into one of two types. Simple registrations 
 responsible for the maintenance of the whole entity, and partial registrations where attributes are spread across
 multiple context providers. For a simple registration, all context requests are forwarded
 
-| Request | Action at <br/>Context Broker                                                                                                    | Action at br/>Context Provider                                                                     |
-| ------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| GET     | Pass request to Context Provider, proxy the response back unaltered.                                                             | Respond to context broker with the result of the GET request based on the entities held internally |
-| PATCH   | Pass request to Context Provider, proxy back the HTTP back status code.                                                          | Update the entity within the Context Provider, Respond to the context broker with a status code    |
-| DELETE  | Pass request to Context Provider Delete the entity within the Context Provider, Respond to the context broker with a status code |
+| Request    | Action at **Context Broker**                                                                                                     | Action at **Context Provider**                                                                     |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **GET**    | Pass request to Context Provider, proxy the response back unaltered.                                                             | Respond to context broker with the result of the GET request based on the entities held internally |
+| **PATCH**  | Pass request to Context Provider, proxy back the HTTP back status code.                                                          | Update the entity within the Context Provider, Respond to the context broker with a status code    |
+| **DELETE** | Pass request to Context Provider Delete the entity within the Context Provider, Respond to the context broker with a status code |
 
 Effectively every simple registration is saying _"this entity is held elsewhere"_, but the entity data can be requested
-and modified via requests to this context boroker.
+and modified via requests to this context broker.
 
 For partial registrations the situation is more complex
 
-| Request | Action at <br/>Context Broker                                                                                                                                                                                       | Action at br/>Context Provider                                                                                                   |
-| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| GET     | Assuming an entity exists locally, pass request for additional proxied attributes to Context Provider, concatenate a response back for locally held attributes and additional information from the context provider | Respond to context broker with the result of the GET request based on the entities held internally                               |
-| PATCH   | Update any locally held attributes, Pass update requests for additional attributes to Context Provider, and return **success** or **partial success** HTTP status code dependent upon the overall result.           | Update the requested attributes of the entity held within the Context Provider. Respond to the context broker with a status code |
-| DELETE  | If deleting an entity, remove the complete local instance. If deleting locally held attributes remove them. If deleting attributes held in the context provider, pass request on to Context Provider                | Delete the entity attributes within the Context Provider, Respond to the context broker with a status code                       |
+| Request    | Action at **Context Broker**                                                                                                                                                                                        | Action at **Context Provider**                                                                                                   |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| **GET**    | Assuming an entity exists locally, pass request for additional proxied attributes to Context Provider, concatenate a response back for locally held attributes and additional information from the context provider | Respond to context broker with the result of the GET request based on the entities held internally                               |
+| **PATCH**  | Update any locally held attributes, Pass update requests for additional attributes to Context Provider, and return **success** or **partial success** HTTP status code dependent upon the overall result.           | Update the requested attributes of the entity held within the Context Provider. Respond to the context broker with a status code |
+| **DELETE** | If deleting an entity, remove the complete local instance. If deleting locally held attributes remove them. If deleting attributes held in the context provider, pass request on to Context Provider                | Delete the entity attributes within the Context Provider, Respond to the context broker with a status code                       |
 
 Each partial registration is saying _"additional augmented context for this entity is held elsewhere"_. The entity data
 can be requested and modified via requests to this context broker.
