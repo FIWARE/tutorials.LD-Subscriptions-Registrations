@@ -33,13 +33,15 @@ The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also a
         -   [Create a Subscription (Store 1) - Low Stock](#create-a-subscription-store-1---low-stock)
         -   [Create a Subscription (Store 2) - Low Stock](#create-a-subscription-store-2---low-stock)
         -   [Read Subscription Details](#read-subscription-details)
-    -   [Using Registrations with NGSI-LD](#using-registrations-with-ngsi-ld) +
-        [Create a Registration](#create-a-registration) + [Read Registration Details](#read-registration-details) +
-        [Read from Store 1](#read-from-store-1) +
-        [Read direct from the Context Provider](#read-direct-from-the-context-provider) +
-        [Direct update of the Context Provider](#direct-update-of-the-context-provider) +
-        [Forwarded Update](#forwarded-update)
-        </details>
+    -   [Using Registrations with NGSI-LD](#using-registrations-with-ngsi-ld)
+        -   [Create a Registration](#create-a-registration)
+        -   [Read Registration Details](#read-registration-details)
+        -   [Read from Store 1](#read-from-store-1)
+        -   [Read direct from the Context Provider](#read-direct-from-the-context-provider)
+        -   [Direct update of the Context Provider](#direct-update-of-the-context-provider)
+        -   [Forwarded Update](#forwarded-update)
+
+</details>
 
 # Understanding Linked Data Subscriptions and Registrations
 
@@ -55,22 +57,25 @@ As a brief reminder, within a distributed system, subscriptions inform a third p
 context data has occurred (and the component needs to take further actions), whereas registrations tell the context
 broker that additional context information is available from another source.
 
-Both of these operations require that the receiving component fully understands the requests it receives, and is capable of
-creating and interpreting the resultant payloads. The differences here between NGSI-v2 and NGSI-LD operations is small,
-but there has been a minor amendment to facilite the incorporation of linked data concepts, and therefore the contract
-between the various components has changed to include minor updates.
+Both of these operations require that the receiving component fully understands the requests it receives, and is capable
+of creating and interpreting the resultant payloads. The differences here between NGSI-v2 and NGSI-LD operations is
+small, but there has been a minor amendment to facilite the incorporation of linked data concepts, and therefore the
+contract between the various components has changed to include minor updates.
 
 ## Entities within a stock management system
 
-The relationship between our Linked Data entities is defined as shown, in addition to the existing data, the `tweets` attribute will
-be supplied by a *Context Provider*. In all other respects this model remains the same as the [previous tutorial](https://github.com/FIWARE/tutorials.Working-with-Linked-Data/) :
+The relationship between our Linked Data entities is defined as shown, in addition to the existing data, the `tweets`
+attribute will be supplied by a _Context Provider_. In all other respects this model remains the same as the
+[previous tutorial](https://github.com/FIWARE/tutorials.Working-with-Linked-Data/) :
 
 ![](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/entities.png)
 
 ## Stock Management frontend
 
-The simple Node.js Express application has updated to use NGSI-LD in the previous [tutorial](https://github.com/FIWARE/tutorials.Working-with-Linked-Data/).
-We will use the monitor page to watch the status of recent requests, and a two store pages to buy products. Once the services are running these pages can be accessed from the following URLs:
+The simple Node.js Express application has updated to use NGSI-LD in the previous
+[tutorial](https://github.com/FIWARE/tutorials.Working-with-Linked-Data/). We will use the monitor page to watch the
+status of recent requests, and a two store pages to buy products. Once the services are running these pages can be
+accessed from the following URLs:
 
 #### Event Monitor
 
@@ -179,26 +184,26 @@ Goto `http://localhost:3000/app/store/urn:ngsi-ld:Building:store001` to display 
 
 ### Create a Subscription (Store 1) - Low Stock
 
-NGSI-LD subscriptions can be set up using the  `/ngsi-ld/v1/subscriptions/` endpoint and in a similar manner to the NGSI-v2
-`/v2/subscriptions` endpoint. The payload body is slightly different however. Firstly the linked data `@context` must
-be present either as an attribute or in the `Link` header. If the `@context` is placed in the body the `Context-Type` header 
-must state that the payload is `application/ld+json` - i.e. Linked Data plus JSON. The supplied `@context` will also be used
-when making notifications as part of the notification request.
+NGSI-LD subscriptions can be set up using the `/ngsi-ld/v1/subscriptions/` endpoint and in a similar manner to the
+NGSI-v2 `/v2/subscriptions` endpoint. The payload body is slightly different however. Firstly the linked data `@context`
+must be present either as an attribute or in the `Link` header. If the `@context` is placed in the body the
+`Context-Type` header must state that the payload is `application/ld+json` - i.e. Linked Data plus JSON. The supplied
+`@context` will also be used when making notifications as part of the notification request.
 
-The `type` of the NGSI-LD subscription request is always `type=Subscription`.  The structure of the subscription has changed.
-When setting up a subscription, there is no longer a  separate `subject` section to the payload, entities to watch and trigger 
-conditions are now set at the same level as the `description` of the subscription.
+The `type` of the NGSI-LD subscription request is always `type=Subscription`. The structure of the subscription has
+changed. When setting up a subscription, there is no longer a separate `subject` section to the payload, entities to
+watch and trigger conditions are now set at the same level as the `description` of the subscription.
 
-* `condition.attrs` has been moved up a level and renamed to `watchedAttributes`
-* `condition.expression` has been moved up a level and renamed to `q`
+-   `condition.attrs` has been moved up a level and renamed to `watchedAttributes`
+-   `condition.expression` has been moved up a level and renamed to `q`
 
-The `notification` section of the body states that once the conditions of the subscription have been met, a POST request 
+The `notification` section of the body states that once the conditions of the subscription have been met, a POST request
 containing all affected Shelf entities will be sent to the URL `http://tutorial:3000/subscription/low-stock-store001`.
-It is now possible to amend the notification payload by requesting `notification.format=keyValues` and remove the `@context` from the
-notification body by stating `notification.endpoint.accept=application/json`. The `@context` is not lost, it is merely passed as
-a `Link` header. In summary, all of the flags within a subscription work in the same manner  as a GET request 
-to the context broker itself. If no flags are set, a full NGSI-LD respsonse including the `@context` is returned by default, and 
-the payload can be reduced and amended by adding in further restrictions. 
+It is now possible to amend the notification payload by requesting `notification.format=keyValues` and remove the
+`@context` from the notification body by stating `notification.endpoint.accept=application/json`. The `@context` is not
+lost, it is merely passed as a `Link` header. In summary, all of the flags within a subscription work in the same manner
+as a GET request to the context broker itself. If no flags are set, a full NGSI-LD respsonse including the `@context` is
+returned by default, and the payload can be reduced and amended by adding in further restrictions.
 
 #### :one: Request:
 
@@ -225,9 +230,10 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 
 ### Create a Subscription (Store 2) - Low Stock
 
-This second request fires notifications to a different endpoint (URL `http://tutorial:3000/subscription/low-stock-store002`.)
-The `notification.format=normalized` and `notification.endpoint.accept=application/ld+json` will ensure that the `@context`
-is passed in the body of the notification request and that the payload will consist of the expanded entities.
+This second request fires notifications to a different endpoint (URL
+`http://tutorial:3000/subscription/low-stock-store002`.) The `notification.format=normalized` and
+`notification.endpoint.accept=application/ld+json` will ensure that the `@context` is passed in the body of the
+notification request and that the payload will consist of the expanded entities.
 
 #### :two: Request:
 
@@ -254,19 +260,21 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 
 ### Read Subscription Details
 
-Subscription details can be read by making a GET request to the `/ngsi-ld/v1/subscriptions/`. All subscription CRUD actions continue to be mapped to the
-same HTTP verbs as before. Adding  the `Accept: application/json` will remove the `@context` element from the response body.
+Subscription details can be read by making a GET request to the `/ngsi-ld/v1/subscriptions/`. All subscription CRUD
+actions continue to be mapped to the same HTTP verbs as before. Adding the `Accept: application/json` will remove the
+`@context` element from the response body.
 
 #### :three: Request:
 
 ```console
-curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/subscriptions/' 
+curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/subscriptions/'
 ```
 
 #### Response:
 
-The response consists of the details of the subscriptions within the system.  The parameters within the `q` attribute have been expanded to use the full URIs,
-as internally the broker consistently uses long names. The differences between the payloads offered by the two subscriptions will be discussed below.
+The response consists of the details of the subscriptions within the system. The parameters within the `q` attribute
+have been expanded to use the full URIs, as internally the broker consistently uses long names. The differences between
+the payloads offered by the two subscriptions will be discussed below.
 
 ```jsonld
 [
@@ -329,29 +337,33 @@ as internally the broker consistently uses long names. The differences between t
 
 ### Retrieving Subscription Events
 
-Open two tabs on a browser. Goto the event monitor (`http://localhost:3000/app/monitor`) to see the payloads that are received when a subscription fires,
-and then go to store001  (`http://localhost:3000/app/store/urn:ngsi-ld:Building:store001`) and buy beer until less than 10 items are in stock. The low stock message should be displayed
-on screen.
+Open two tabs on a browser. Goto the event monitor (`http://localhost:3000/app/monitor`) to see the payloads that are
+received when a subscription fires, and then go to store001
+(`http://localhost:3000/app/store/urn:ngsi-ld:Building:store001`) and buy beer until less than 10 items are in stock.
+The low stock message should be displayed on screen.
 
 ![low-stock](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/low-stock-warehouse.png)
 
-`low-stock-store001` is fired when the Products on the shelves within Store001 are getting low, the subscription payload can be seen below:
+`low-stock-store001` is fired when the Products on the shelves within Store001 are getting low, the subscription payload
+can be seen below:
 
 ![low-stock-json](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/low-stock-monitor.png)
 
-The data within the payload consists of key-value pairs of the attributes which were specified in the request. This is because the subscription
-was created using the `format=keyValues` attribute. The `@context` is not present in the payload body since `endpoint.accept=application/json` was
-set. The effect is to return a `data` array in a very similar format to the `v2/subscription/` payload.  In addition to the `data` array, the
-`subscriptionId` is included in the response, along with a `notifiedAt` element which describes when the notification was fired.
+The data within the payload consists of key-value pairs of the attributes which were specified in the request. This is
+because the subscription was created using the `format=keyValues` attribute. The `@context` is not present in the
+payload body since `endpoint.accept=application/json` was set. The effect is to return a `data` array in a very similar
+format to the `v2/subscription/` payload. In addition to the `data` array, the `subscriptionId` is included in the
+response, along with a `notifiedAt` element which describes when the notification was fired.
 
-Now goto  go to store002  (`http://localhost:3000/app/store/urn:ngsi-ld:Building:store002`) and buy beer until less than 10 items are in stock. 
-The low stock message is once again displayed on screen, the payload can be seen within the event monitor.
+Now goto go to store002 (`http://localhost:3000/app/store/urn:ngsi-ld:Building:store002`) and buy beer until less than
+10 items are in stock. The low stock message is once again displayed on screen, the payload can be seen within the event
+monitor.
 
 ![low-stock-ld](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/low-stock-monitor-ld.png)
 
-The second subscription has been set up to pass the full NGSI-LD payload along with the `@context`. This has been achieved by using the 
-using the `format=normalized` attribute within the subscription itself, as well as setting `endpoint.accept=application/ld+json`, so that the `@context`
-is also passed with each entitiy.
+The second subscription has been set up to pass the full NGSI-LD payload along with the `@context`. This has been
+achieved by using the using the `format=normalized` attribute within the subscription itself, as well as setting
+`endpoint.accept=application/ld+json`, so that the `@context` is also passed with each entitiy.
 
 ## Using Registrations with NGSI-LD
 
@@ -489,28 +501,26 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:s
 }
 ```
 
-The same response data can be seen within the supermarker application itself. In practice this data has been created via a
-series of requests - the context broker is responsibile for the `urn:ngsi-ld:Building:store001` data, however it checks to
-see if any further information can be provided from other sources. In our case the `CSourceRegistration` indicates that one
-further attribute _may_ be available. The broker then requests `tweets` information from the context provider, and provided
-that it responds in a timely manner, the `tweets` information is added to the resultant payload.
+The same response data can be seen within the supermarker application itself. In practice this data has been created via
+a series of requests - the context broker is responsibile for the `urn:ngsi-ld:Building:store001` data, however it
+checks to see if any further information can be provided from other sources. In our case the `CSourceRegistration`
+indicates that one further attribute _may_ be available. The broker then requests `tweets` information from the context
+provider, and provided that it responds in a timely manner, the `tweets` information is added to the resultant payload.
 
 The supermarket application displays the received data on screen within the supermarket application itself:
 
 ![tweets-1](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/tweets-1.png)
 
-
 ### Read direct from the Context Provider
 
-Every context-provider must stand by a fixed contract. At a minimum must be able to respond to varieties of the 
-`/ngsi-ld/v1/entities/<entity-id>` GET request. If the registration is limited to certain properties, this
-request will also contain an `attrs` parameter in the query string.
+Every context-provider must stand by a fixed contract. At a minimum must be able to respond to varieties of the
+`/ngsi-ld/v1/entities/<entity-id>` GET request. If the registration is limited to certain properties, this request will
+also contain an `attrs` parameter in the query string.
 
 Dependent upon the use case of the context-provider, it may or may not need to be able to interpret JSON-LD `@context` -
 in this case a request is merely returning the full `tweets` attribute.
 
 The same request is made by the context broker itself when querying for registered attributes
-
 
 #### :seven: Request:
 
@@ -522,8 +532,8 @@ curl -L -X GET 'http://localhost:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi
 
 #### Response:
 
-As can be seen the `@context` has been returned in the request (since the `Content-Type` header was set). The rest of the response resembles
-any standard NGSI-LD request.
+As can be seen the `@context` has been returned in the request (since the `Content-Type` header was set). The rest of
+the response resembles any standard NGSI-LD request.
 
 ```jsonld
 {
@@ -547,8 +557,8 @@ any standard NGSI-LD request.
 
 ### Direct update of the Context Provider
 
-For a read-write interface it is also possible to amend context data by making a PATCH request to the relevant `ngsi-ld/v1/entities/<entity-id>/attrs` endpoint.
-
+For a read-write interface it is also possible to amend context data by making a PATCH request to the relevant
+`ngsi-ld/v1/entities/<entity-id>/attrs` endpoint.
 
 #### :eight: Request:
 
@@ -567,7 +577,6 @@ curl -L -X PATCH 'http://localhost:3000/static/tweets/ngsi-ld/v1/entities/urn:ng
   }
 }'
 ```
-
 
 #### :nine: Request:
 
@@ -591,9 +600,10 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:s
 }
 ```
 
-Since the context provider is responsible for supplying `tweets` information, changes in the context provider will always be
-reflected in requests to the context-broker itself. The supermarket application is calling the context broker for context
-regardless of origin, so the updated `tweets` data are displayed on screen within the supermarket application itself:
+Since the context provider is responsible for supplying `tweets` information, changes in the context provider will
+always be reflected in requests to the context-broker itself. The supermarket application is calling the context broker
+for context regardless of origin, so the updated `tweets` data are displayed on screen within the supermarket
+application itself:
 
 ![tweets-2](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/tweets-2.png)
 
@@ -603,12 +613,13 @@ The context broker is therefore able to return a complete holistic picture of th
 
 #### :one::zero: Request:
 
-A PATCH request to the context broker ( either `ngsi-ld/v1/entities/<entity-id>/` or `ngsi-ld/v1/entities/<entity-id>/attrs`) will be forwarded to
-the registered context provider if a registration is found. It is therefore possible to alter the state of a context-provider as a side effect.
-Of course, not all context providers are necessarily read-write, so attempting to change the attributes of forwarded context may not be fully
+A PATCH request to the context broker ( either `ngsi-ld/v1/entities/<entity-id>/` or
+`ngsi-ld/v1/entities/<entity-id>/attrs`) will be forwarded to the registered context provider if a registration is
+found. It is therefore possible to alter the state of a context-provider as a side effect. Of course, not all context
+providers are necessarily read-write, so attempting to change the attributes of forwarded context may not be fully
 respected.
 
-In this case however a request to PATCH  `ngsi-ld/v1/entities/<entity-id>` will be successfully forwarded as a series of 
+In this case however a request to PATCH `ngsi-ld/v1/entities/<entity-id>` will be successfully forwarded as a series of
 `ngsi-ld/v1/entities/<entity-id>/attrs` requests for each regsitered attribute that is found in the registration.
 
 ```console
@@ -624,7 +635,6 @@ curl -L -X PATCH 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building
 } '
 ```
 
-
 #### :one::one: Request:
 
 The result of the previous operation can be seen by retrieving the whole entity using a GET request.
@@ -634,7 +644,6 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:s
 -H 'Link: <https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
 -H 'Content-Type: application/json'
 ```
-
 
 #### Response:
 
