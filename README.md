@@ -355,17 +355,50 @@ payload body since `endpoint.accept=application/json` was set. The effect is to 
 format to the `v2/subscription/` payload. In addition to the `data` array, the `subscriptionId` is included in the
 response, along with a `notifiedAt` element which describes when the notification was fired.
 
-Now goto go to store002 (`http://localhost:3000/app/store/urn:ngsi-ld:Building:store002`) and buy beer until less than
+Now goto go to store002 (`http://localhost:3000/app/store/urn:ngsi-ld:Building:store002`) and buy beer until fewer than
 10 items are in stock. The low stock message is once again displayed on screen, the payload can be seen within the event
 monitor.
 
 ![low-stock-ld](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/low-stock-monitor-ld.png)
 
-The second subscription has been set up to pass the full NGSI-LD payload along with the `@context`. This has been
-achieved by using the using the `format=normalized` attribute within the subscription itself, as well as setting
+The second subscription has been set up to pass the full normalized NGSI-LD payload along with the `@context`. This has
+been achieved by using the using the `format=normalized` attribute within the subscription itself, as well as setting
 `endpoint.accept=application/ld+json`, so that the `@context` is also passed with each entitiy.
 
 ## Using Registrations with NGSI-LD
+
+Context Registrations allow some (or all) data within an entity to be provided by an external context provider. It could
+be another full context-provider a separate micro-service which only responds to a subset of the NGSI-LD endpoints.
+However, there needs to be a contract created as to who supplies what.
+
+All registrations can be subdivided into one of two types. Simple registrations where a single context provider is
+responsible for the maintenance of the whole entity, and partial registrations where attributes are spread across
+multiple context providers. For a simple registration, all context requests are forwarded
+
+| Request | Action at <br/>Context Broker                                                                                                    | Action at br/>Context Provider                                                                     |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| GET     | Pass request to Context Provider, proxy the response back unaltered.                                                             | Respond to context broker with the result of the GET request based on the entities held internally |
+| PATCH   | Pass request to Context Provider, proxy back the HTTP back status code.                                                          | Update the entity within the Context Provider, Respond to the context broker with a status code    |
+| DELETE  | Pass request to Context Provider Delete the entity within the Context Provider, Respond to the context broker with a status code |
+
+Effectively every simple registration is saying _"this entity is held elsewhere"_, but the entity data can be requested
+and modified via requests to this context boroker.
+
+For partial registrations the situation is more complex
+
+| Request | Action at <br/>Context Broker                                                                                                                                                                                       | Action at br/>Context Provider                                                                                                   |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| GET     | Assuming an entity exists locally, pass request for additional proxied attributes to Context Provider, concatenate a response back for locally held attributes and additional information from the context provider | Respond to context broker with the result of the GET request based on the entities held internally                               |
+| PATCH   | Update any locally held attributes, Pass update requests for additional attributes to Context Provider, and return **success** or **partial success** HTTP status code dependent upon the overall result.           | Update the requested attributes of the entity held within the Context Provider. Respond to the context broker with a status code |
+| DELETE  | If deleting an entity, remove the complete local instance. If deleting locally held attributes remove them. If deleting attributes held in the context provider, pass request on to Context Provider                | Delete the entity attributes within the Context Provider, Respond to the context broker with a status code                       |
+
+Each partial registration is saying _"additional augmented context for this entity is held elsewhere"_. The entity data
+can be requested and modified via requests to this context broker.
+
+With normal operation, the NGSI-LD response does not expose whether data collated from multiple sources is held directly
+within the context broker or whether the information has been retrieved externally. It is only when an error occurs
+(e.g. timeout) that the HTTP status error code reveals that externally held information could not be retrieved or
+amended.
 
 ### Create a Registration
 
@@ -502,10 +535,10 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:s
 ```
 
 The same response data can be seen within the supermarker application itself. In practice this data has been created via
-a series of requests - the context broker is responsibile for the `urn:ngsi-ld:Building:store001` data, however it
-checks to see if any further information can be provided from other sources. In our case the `CSourceRegistration`
-indicates that one further attribute _may_ be available. The broker then requests `tweets` information from the context
-provider, and provided that it responds in a timely manner, the `tweets` information is added to the resultant payload.
+a series of requests - the context broker is responsible for the `urn:ngsi-ld:Building:store001` data, however it checks
+to see if any further information can be provided from other sources. In our case the `CSourceRegistration` indicates
+that one further attribute _may_ be available. The broker then requests `tweets` information from the context provider,
+and provided that it responds in a timely manner, the `tweets` information is added to the resultant payload.
 
 The supermarket application displays the received data on screen within the supermarket application itself:
 
