@@ -15,6 +15,8 @@ The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also a
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ae2d2d3f42bbdf59c45)
 
+-   このチュートリアルは[日本語](README.ja.md)でもご覧いただけます。
+
 ## Contents
 
 <details>
@@ -33,6 +35,7 @@ The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also a
         -   [Create a Subscription (Store 1) - Low Stock](#create-a-subscription-store-1---low-stock)
         -   [Create a Subscription (Store 2) - Low Stock](#create-a-subscription-store-2---low-stock)
         -   [Read Subscription Details](#read-subscription-details)
+        -   [Retrieving Subscription Events](#retrieving-subscription-events)
     -   [Using Registrations with NGSI-LD](#using-registrations-with-ngsi-ld)
         -   [Create a Registration](#create-a-registration)
         -   [Read Registration Details](#read-registration-details)
@@ -107,7 +110,7 @@ technology which allows to different components isolated into their respective e
 -   To install Docker on Linux follow the instructions [here](https://docs.docker.com/install/)
 
 **Docker Compose** is a tool for defining and running multi-container Docker applications. A
-[YAML file](https://raw.githubusercontent.com/fiware/tutorials.Relationships-Linked-Data/master/docker-compose.yml) is
+[YAML file](https://raw.githubusercontent.com/fiware/tutorials.LD-Subscriptions-Registrations/master/docker-compose/orion-ld.yml) is
 used configure the required services for the application. This means all container services can be brought up in a
 single command. Docker Compose is installed by default as part of Docker for Windows and Docker for Mac, however Linux
 users will need to follow the instructions found [here](https://docs.docker.com/compose/install/)
@@ -152,7 +155,7 @@ from exposed ports.
 
 ![](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/architecture.png)
 
-The necessary configuration information can be seen in the services section of the associated `docker-compose.yml` file.
+The necessary configuration information can be seen in the services section of the associated `orion-ld.yml` file.
 It has been described in a [previous tutorial](https://github.com/FIWARE/tutorials.Working-with-Linked-Data/)
 
 # Start Up
@@ -202,7 +205,7 @@ containing all affected Shelf entities will be sent to the URL `http://tutorial:
 It is now possible to amend the notification payload by requesting `notification.format=keyValues` and remove the
 `@context` from the notification body by stating `notification.endpoint.accept=application/json`. The `@context` is not
 lost, it is merely passed as a `Link` header. In summary, all of the flags within a subscription work in the same manner
-as a GET request to the context broker itself. If no flags are set, a full NGSI-LD respsonse including the `@context` is
+as a GET request to the context broker itself. If no flags are set, a full NGSI-LD response including the `@context` is
 returned by default, and the payload can be reduced and amended by adding in further restrictions.
 
 #### :one: Request:
@@ -337,7 +340,7 @@ the payloads offered by the two subscriptions will be discussed below.
 
 ### Retrieving Subscription Events
 
-Open two tabs on a browser. Goto the event monitor (`http://localhost:3000/app/monitor`) to see the payloads that are
+Open two tabs on a browser. Go to the event monitor (`http://localhost:3000/app/monitor`) to see the payloads that are
 received when a subscription fires, and then go to store001
 (`http://localhost:3000/app/store/urn:ngsi-ld:Building:store001`) and buy beer until less than 10 items are in stock.
 The low stock message should be displayed on screen.
@@ -355,8 +358,8 @@ payload body since `endpoint.accept=application/json` was set. The effect is to 
 format to the `v2/subscription/` payload. In addition to the `data` array, the `subscriptionId` is included in the
 response, along with a `notifiedAt` element which describes when the notification was fired.
 
-Now goto go to store002 (`http://localhost:3000/app/store/urn:ngsi-ld:Building:store002`) and buy beer until fewer than
-10 items are in stock. The low stock message is once again displayed on screen, the payload can be seen within the event
+Now go to store002 (`http://localhost:3000/app/store/urn:ngsi-ld:Building:store002`) and buy beer until fewer than 10
+items are in stock. The low stock message is once again displayed on screen, the payload can be seen within the event
 monitor.
 
 ![low-stock-ld](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/low-stock-monitor-ld.png)
@@ -534,7 +537,7 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:s
 }
 ```
 
-The same response data can be seen within the supermarker application itself. In practice this data has been created via
+The same response data can be seen within the supermarket application itself. In practice this data has been created via
 a series of requests - the context broker is responsible for the `urn:ngsi-ld:Building:store001` data, however it checks
 to see if any further information can be provided from other sources. In our case the `CSourceRegistration` indicates
 that one further attribute _may_ be available. The broker then requests `tweets` information from the context provider,
