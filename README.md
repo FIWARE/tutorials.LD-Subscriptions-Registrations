@@ -110,8 +110,8 @@ technology which allows to different components isolated into their respective e
 -   To install Docker on Linux follow the instructions [here](https://docs.docker.com/install/)
 
 **Docker Compose** is a tool for defining and running multi-container Docker applications. A
-[YAML file](https://raw.githubusercontent.com/fiware/tutorials.LD-Subscriptions-Registrations/master/docker-compose/orion-ld.yml) is
-used configure the required services for the application. This means all container services can be brought up in a
+[YAML file](https://raw.githubusercontent.com/fiware/tutorials.LD-Subscriptions-Registrations/master/docker-compose/orion-ld.yml)
+is used configure the required services for the application. This means all container services can be brought up in a
 single command. Docker Compose is installed by default as part of Docker for Windows and Docker for Mac, however Linux
 users will need to follow the instructions found [here](https://docs.docker.com/compose/install/)
 
@@ -155,8 +155,8 @@ from exposed ports.
 
 ![](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/architecture.png)
 
-The necessary configuration information can be seen in the services section of the associated `orion-ld.yml` file.
-It has been described in a [previous tutorial](https://github.com/FIWARE/tutorials.Working-with-Linked-Data/)
+The necessary configuration information can be seen in the services section of the associated `orion-ld.yml` file. It
+has been described in a [previous tutorial](https://github.com/FIWARE/tutorials.Working-with-Linked-Data/)
 
 # Start Up
 
@@ -405,6 +405,16 @@ amended.
 
 ### Create a Registration
 
+All NGSI-LD Context Provider Registration actions take place on the `/ngsi-ld/v1/csourceRegistrations/` endpoint. The
+standard CRUD mappings apply. The `@context` must be passed either as a `Link` header or within the main body of the
+request.
+
+The body of the request is similar to the NGSI-v2 equivalent with the following modifications:
+
+-   The NGSI-v2 `dataProvided` object is now an array called `information`.
+-   NGSI-v2 `attrs` have been split into separate arrays of `properties` and `relationships`
+-   The NGSI-v2 `provider.url` has moved up to `endpoint`
+
 #### :four: Request:
 
 ```console
@@ -432,6 +442,9 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/csourceRegistrations/' \
 
 ### Read Registration Details
 
+Retrieving the registration details can be made by sending a GET request to the `/ngsi-ld/v1/csourceRegistrations/`
+endpoint, along with an appropriate JSON-LD context in the `Link` header.
+
 #### :five: Request:
 
 ```console
@@ -441,6 +454,9 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/csourceRegistrations/' \
 ```
 
 #### Response:
+
+The response returns the details of the registration. In this case the short names of the `properties` have been
+returned, along with the `@context`.
 
 ```jsonld
 [
@@ -468,6 +484,11 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/csourceRegistrations/' \
 
 ### Read from Store 1
 
+Once a registration has been set up, the additional registered `properties` and `relationships` are transparently
+returned when an requested entity is requested. For simple registrations, a request to obtain the whole entity will be
+proxied to the registered `endpoint`, for partial registrations the `properties` and `relationships` are added to the
+existing entity held within the context broker.
+
 #### :six: Request:
 
 ```console
@@ -477,6 +498,10 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:s
 ```
 
 #### Response:
+
+The response now holds an additional `tweets` Property, which returns the values obtained from
+`http://context-provider:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001` - i.e. the forwarding
+endpoint.
 
 ```jsonld
 {
@@ -616,12 +641,18 @@ curl -L -X PATCH 'http://localhost:3000/static/tweets/ngsi-ld/v1/entities/urn:ng
 
 #### :nine: Request:
 
+If the regisitered attribute is requested from the context broker, it returns the _updated_ values obtained from
+`http://context-provider:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001` - i.e. the forwarding
+endpoint.
+
 ```console
 curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001?attrs=tweets&options=keyValues' \
 -H 'Link: <https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
 ```
 
 #### Response:
+
+This alters the response to match the values updated in the previous PATCH request.
 
 ```jsonld
 {
@@ -682,6 +713,9 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:s
 ```
 
 #### Response:
+
+This alters the response to match the values updated in the previous PATCH request which was sent to the context broker
+and then forwarded to the context provider endpoint.
 
 ```jsonld
 {
