@@ -13,7 +13,7 @@ context-provider and subscriptions tutorials but uses API calls from the **NGSI-
 The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also available as
 [Postman documentation](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/)
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ae2d2d3f42bbdf59c45)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2c53b7c2bce9fd7b7b47)
 
 -   このチュートリアルは[日本語](README.ja.md)でもご覧いただけます。
 
@@ -366,7 +366,7 @@ monitor.
 
 The second subscription has been set up to pass the full normalized NGSI-LD payload along with the `@context`. This has
 been achieved by using the using the `format=normalized` attribute within the subscription itself, as well as setting
-`endpoint.accept=application/ld+json`, so that the `@context` is also passed with each entitiy.
+`endpoint.accept=application/ld+json`, so that the `@context` is also passed with each entity.
 
 ## Using Registrations with NGSI-LD
 

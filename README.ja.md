@@ -13,7 +13,7 @@
 このチュートリアルでは、全体で [cUrl](https://ec.haxx.se/) コマンドを使用していますが、
 [Postmanドキュメント](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/) としても利用できます。
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ae2d2d3f42bbdf59c45)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2c53b7c2bce9fd7b7b47)
 
 ## コンテンツ
 
@@ -72,7 +72,7 @@ NGSI-LD サブスクリプションとレジストレーションは、スマー
 コンテキスト・プロバイダ (_Context Provider_) によって提供されます。他のすべての点で、このモデルは
 [以前のチュートリアル](https://github.com/FIWARE/tutorials.Working-with-Linked-Data/) と同じです。
 
-![](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/entities.png) 
+![](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/entities.png)
 
 <a name="stock-management-frontend"/>
 
@@ -87,7 +87,7 @@ NGSI-LD サブスクリプションとレジストレーションは、スマー
 
 イベント・モニタは次の場所にあります: `http://localhost:3000/app/monitor`
 
-![FIWARE Monitor](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/monitor.png) 
+![FIWARE Monitor](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/monitor.png)
 
 #### Store 001
 
@@ -99,7 +99,7 @@ Store001 は次の場所にあります: `http:/localhost:3000/app/store/urn:ngs
 
 Store002 は次の場所にあります: `http:/localhost:3000/app/store/urn:ngsi-ld:Building:store002`
 
-![Store2](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/store2.png) 
+![Store2](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/store2.png)
 
 <a name="prerequisites"/>
 
@@ -164,7 +164,7 @@ Context Provider NGSI proxy  も追加されました。 コンテキストを�
 要素間のすべての対話は HTTP リクエストによって開始されるため、エンティティはコンテナ化され、公開されたポートから実行
 できます。
 
-![](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/architecture.png) 
+![](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/architecture.png)
 
 必要な設定情報は、関連する `orion-ld.yml` ファイルの services セクションで確認できます。
 [以前のチュートリアル](https://github.com/FIWARE/tutorials.Working-with-Linked-Data/) で説明しています。
@@ -574,7 +574,7 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:s
 
 スーパーマーケット・アプリケーションは、スーパーマーケット・アプリケーション自体の画面に受信データを表示します :
 
-![tweets-1](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/tweets-1.png) 
+![tweets-1](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/tweets-1.png)
 
 ### コンテキスト・プロバイダから直接取得
 
@@ -669,7 +669,7 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:s
 自体へのリクエストに反映されます。スーパーマーケット・アプリケーションはコンテキストに関係なく Context Broker を
 呼び出しているため、更新された `tweets` データはスーパーマーケット・アプリケーション自体の画面に表示されます。
 
-![tweets-2](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/tweets-2.png) 
+![tweets-2](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/tweets-2.png)
 
 したがって、 Context Broker は、世界の現在の状態の完全な全体像を返すことができます。
 
