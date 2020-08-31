@@ -181,6 +181,7 @@ Context Provider NGSI proxy  も追加されました。 コンテキストを�
 ```bash
 git clone https://github.com/FIWARE/tutorials.LD-Subscriptions-Registrations.git
 cd tutorials.LD-Subscriptions-Registrations
+git checkout NGSI-v2
 
 ./services orion
 ```
