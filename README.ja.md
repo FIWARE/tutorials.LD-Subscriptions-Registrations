@@ -16,6 +16,10 @@
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2c53b7c2bce9fd7b7b47)
 
+:warning:  **注:** このチュートリアルは、システムを **NGSI-LD** に切り替えたりアップグレードしたりする **NGSI-v2**
+開発者向けに設計されています。リンクト・データシステムを最初から構築する場合、または **NGSI-v2** にまだ慣れていない場合は、
+[NGSI-LD 開発者向けチュートリアル](https://www.letsfiware.jp/ngsi-ld-tutorials)のドキュメントを参照することをお勧めします。
+
 ## コンテンツ
 
 <details>
