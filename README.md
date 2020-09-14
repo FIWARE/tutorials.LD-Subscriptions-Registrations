@@ -168,7 +168,7 @@ has been described in a [previous tutorial](https://github.com/FIWARE/tutorials.
 # Start Up
 
 All services can be initialised from the command-line by running the
-[services](https://github.com/FIWARE/tutorials.LD-Subscriptions-Registrations/blob/master/services) Bash script provided
+[services](https://github.com/FIWARE/tutorials.LD-Subscriptions-Registrations/blob/NGSI-v2/services) Bash script provided
 within the repository. Please clone the repository and create the necessary images by running the commands as shown:
 
 ```bash

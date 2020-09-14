@@ -178,7 +178,7 @@ Context Provider NGSI proxy  も追加されました。 コンテキストを�
 
 # 起動
 
-[services](https://github.com/FIWARE/tutorials.LD-Subscriptions-Registrations/blob/master/services) Bash スクリプトを
+[services](https://github.com/FIWARE/tutorials.LD-Subscriptions-Registrations/blob/NGSI-v2/services) Bash スクリプトを
 実行して、コマンドラインから初期化できます。以下のようにコマンドを実行して、リポジトリのクローンを作成して必要な
 イメージを作成してください :
 
