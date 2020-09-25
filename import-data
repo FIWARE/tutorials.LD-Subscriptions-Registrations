@@ -29,9 +29,23 @@ curl -s -o /dev/null -X POST \
     "location": {"type": "GeoProperty", "value": {"type": "Point", "coordinates": [13.3986, 52.5547]}
     },
     "name": {"type": "Property", "value": "Bösebrücke Einkauf"},
-    "furniture": {
-      "type": "Relationship", "object": [ "urn:ngsi-ld:Shelf:unit001", "urn:ngsi-ld:Shelf:unit002", "urn:ngsi-ld:Shelf:unit003"]
-    },
+    "furniture":[
+        {
+            "type": "Relationship",
+            "datasetId": "urn:ngsi-ld:Relationship:1",
+            "object": "urn:ngsi-ld:Shelf:unit001"
+        },
+        {
+            "type": "Relationship",
+            "datasetId": "urn:ngsi-ld:Relationship:2",
+            "object": "urn:ngsi-ld:Shelf:unit002"
+        },
+        {
+            "type": "Relationship",
+            "datasetId": "urn:ngsi-ld:Relationship:3",
+            "object": "urn:ngsi-ld:Shelf:unit003"
+        }
+    ],
     "@context": "'"${TUTORIAL_DATA_MODELS_CONTEXT}"'"
 }'
 
@@ -53,9 +67,18 @@ curl -s -o /dev/null -X POST \
     "location": {"type": "GeoProperty", "value": {"type": "Point", "coordinates": [13.3903,52.5075]}
     },
     "name": {"type": "Property", "value": "Checkpoint Markt"},
-    "furniture": {
-      "type": "Relationship", "object": [ "urn:ngsi-ld:Shelf:unit004", "urn:ngsi-ld:Shelf:unit005"]
-    },
+    "furniture":[
+        {
+            "type": "Relationship",
+            "datasetId": "urn:ngsi-ld:Relationship:1",
+            "object": "urn:ngsi-ld:Shelf:unit004"
+        },
+        {
+            "type": "Relationship",
+            "datasetId": "urn:ngsi-ld:Relationship:2",
+            "object": "urn:ngsi-ld:Shelf:unit005"
+        }
+    ],
     "@context": "'"${TUTORIAL_DATA_MODELS_CONTEXT}"'"
 }'
 
@@ -74,9 +97,23 @@ curl -s -o /dev/null -X POST \
     "location": {"type": "GeoProperty", "value": {"type": "Point", "coordinates": [13.4447,52.5031]}
     },
     "name": {"type": "Property", "value": "East Side Galleria"},
-    "furniture": {
-      "type": "Relationship", "object": [ "urn:ngsi-ld:Shelf:unit006", "urn:ngsi-ld:Shelf:unit007", "urn:ngsi-ld:Shelf:unit008"]
-    },
+    "furniture":[
+        {
+            "type": "Relationship",
+            "datasetId": "urn:ngsi-ld:Relationship:1",
+            "object": "urn:ngsi-ld:Shelf:unit006"
+        },
+        {
+            "type": "Relationship",
+            "datasetId": "urn:ngsi-ld:Relationship:2",
+            "object": "urn:ngsi-ld:Shelf:unit007"
+        },
+        {
+            "type": "Relationship",
+            "datasetId": "urn:ngsi-ld:Relationship:3",
+            "object": "urn:ngsi-ld:Shelf:unit008"
+        }
+    ],
     "@context": "'"${TUTORIAL_DATA_MODELS_CONTEXT}"'"
 }'
 
@@ -99,7 +136,7 @@ curl -s -o /dev/null -X POST \
     },
     "name": {"type": "Property", "value": "Tower Trödelmarkt"},
     "furniture": {
-      "type": "Relationship", "object": [ "urn:ngsi-ld:Shelf:unit009"]
+      "type": "Relationship", "object": "urn:ngsi-ld:Shelf:unit009"
     },
     "@context": "'"${TUTORIAL_DATA_MODELS_CONTEXT}"'"
 }'
