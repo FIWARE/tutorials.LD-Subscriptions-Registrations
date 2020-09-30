@@ -25,15 +25,11 @@
 								"value": "<{{datamodels-context.jsonld}}>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"",
 								"type": "text",
 								"disabled": true
-							},
-							{
-								"key": "Accept",
-								"value": "application/ld+json"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"description\": \"Notify me of low stock in Store 001\",\n\t\"type\": \"Subscription\",\n\t\"entities\": [{\"type\": \"Shelf\"}],\n\t\"watchedAttributes\": [\"numberOfItems\"],\n\t\"q\": \"numberOfItems<10;locatedIn==urn:ngsi-ld:Building:store001\",\n\t\"notification\": {\n\t\t\"attributes\": [\"numberOfItems\", \"stocks\", \"locatedIn\"],\n\t\t\"format\": \"keyValues\",\n\t\t\"endpoint\": {\n\t\t\t\"uri\": \"http://tutorial:3000/subscription/low-stock-store001\",\n\t\t\t\"accept\": \"application/json\"\n\t\t}\n\t},\n   \"@context\": \"https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld\"\n}\n        "
+							"raw": "{\n    \"description\": \"Notify me of low stock in Store 001\",\n    \"type\": \"Subscription\",\n    \"entities\": [\n        {\n            \"type\": \"Shelf\"\n        }\n    ],\n    \"watchedAttributes\": [\n        \"numberOfItems\"\n    ],\n    \"q\": \"numberOfItems<10;locatedIn==urn:ngsi-ld:Building:store001\",\n    \"notification\": {\n        \"attributes\": [\n            \"numberOfItems\",\n            \"stocks\",\n            \"locatedIn\"\n        ],\n        \"format\": \"keyValues\",\n        \"endpoint\": {\n            \"uri\": \"http://tutorial:3000/subscription/low-stock-store001\",\n            \"accept\": \"application/json\"\n        }\n    },\n    \"@context\": \"https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld\"\n}"
 						},
 						"url": {
 							"raw": "http://{{orion}}/ngsi-ld/v1/subscriptions/",
@@ -73,17 +69,12 @@
 							{
 								"key": "Link",
 								"type": "text",
-								"value": "<{{datamodels-context.jsonld}}>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"",
-								"disabled": true
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
+								"value": "<{{datamodels-context.jsonld}}>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\""
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"description\": \"Notify me of low stock in Store 002\",\n\t\"type\": \"Subscription\",\n\t\"entities\": [{\"type\": \"Shelf\"}],\n\t\"watchedAttributes\": [\"numberOfItems\"],\n\t\"q\": \"numberOfItems<10;locatedIn==urn:ngsi-ld:Building:store002\",\n\t\"notification\": {\n\t\t\"attributes\": [\"numberOfItems\", \"stocks\", \"locatedIn\"],\n\t\t\"format\": \"keyValues\",\n\t\t\"endpoint\": {\n\t\t\t\"uri\": \"http://tutorial:3000/subscription/low-stock-store002\",\n\t\t\t\"accept\": \"application/json\"\n\t\t}\n\t},\n   \"@context\": \"https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld\"\n}\n        "
+							"raw": "{\n    \"description\": \"Notify me of low stock in Store 002\",\n    \"type\": \"Subscription\",\n    \"entities\": [\n        {\n            \"type\": \"Shelf\"\n        }\n    ],\n    \"watchedAttributes\": [\n        \"numberOfItems\"\n    ],\n    \"q\": \"numberOfItems<10;locatedIn==urn:ngsi-ld:Building:store002\",\n    \"notification\": {\n        \"attributes\": [\n            \"numberOfItems\",\n            \"stocks\",\n            \"locatedIn\"\n        ],\n        \"format\": \"keyValues\",\n        \"endpoint\": {\n            \"uri\": \"http://tutorial:3000/subscription/low-stock-store002\",\n            \"accept\": \"application/json\"\n        }\n    }\n}"
 						},
 						"url": {
 							"raw": "http://{{orion}}/ngsi-ld/v1/subscriptions/",
@@ -128,10 +119,6 @@
 								"type": "text",
 								"value": "<{{datamodels-context.jsonld}}>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"",
 								"disabled": true
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
 							}
 						],
 						"body": {
@@ -251,7 +238,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{orion}}/ngsi-ld/v1/csourceRegistrations/",
+							"raw": "http://{{orion}}/ngsi-ld/v1/csourceRegistrations/?type=Building",
 							"protocol": "http",
 							"host": [
 								"{{orion}}"
@@ -261,6 +248,12 @@
 								"v1",
 								"csourceRegistrations",
 								""
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "Building"
+								}
 							]
 						},
 						"description": "Retrieving the registration details can be made by sending a GET request to the `/ngsi-ld/v1/csourceRegistrations/`\nendpoint, along with an appropriate JSON-LD context in the `Link` header.\n\nThe response returns the details of the registration. In this case the short names of the `properties` have been\nreturned, along with the `@context`."
@@ -284,7 +277,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{orion}}/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001",
+							"raw": "http://{{orion}}/ngsi-ld/v1/entities/?type=Building&id=urn:ngsi-ld:Building:store001",
 							"protocol": "http",
 							"host": [
 								"{{orion}}"
@@ -293,9 +286,17 @@
 								"ngsi-ld",
 								"v1",
 								"entities",
-								"urn:ngsi-ld:Building:store001"
+								""
 							],
 							"query": [
+								{
+									"key": "type",
+									"value": "Building"
+								},
+								{
+									"key": "id",
+									"value": "urn:ngsi-ld:Building:store001"
+								},
 								{
 									"key": "options",
 									"value": "keyValues",
@@ -368,10 +369,6 @@
 								"value": "application/json",
 								"type": "text",
 								"name": "Accept"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
 							}
 						],
 						"body": {
@@ -460,10 +457,6 @@
 								"value": "application/json",
 								"type": "text",
 								"name": "Accept"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
 							}
 						],
 						"body": {
@@ -587,28 +580,24 @@
 	],
 	"variable": [
 		{
-			"id": "5f0444e1-0cc9-4bcc-a6c5-fa484bbd50f4",
+			"id": "73d9502f-7a04-49b6-9265-f190e94df043",
 			"key": "orion",
-			"value": "localhost:1026",
-			"type": "string"
+			"value": "localhost:1026"
 		},
 		{
-			"id": "d901f864-eea1-46b9-a57d-6d5c8401b464",
+			"id": "76b26334-1424-486d-8d01-fa4fa40c9534",
 			"key": "datamodels-context.jsonld",
-			"value": "https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld",
-			"type": "string"
+			"value": "https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld"
 		},
 		{
-			"id": "81ff4c78-4f9f-4051-bde2-90cb56ba9418",
+			"id": "81879004-42a5-4f51-a45f-2553ca5343ab",
 			"key": "device-edge",
-			"value": "localhost:1027",
-			"type": "string"
+			"value": "localhost:1027"
 		},
 		{
-			"id": "37c0e618-a70f-4238-816a-8ef34fbbe160",
+			"id": "bd6020b0-df26-4b5a-b0f9-ad163dd531df",
 			"key": "context-provider",
-			"value": "localhost:3000",
-			"type": "string"
+			"value": "localhost:3000"
 		}
 	],
 	"protocolProfileBehavior": {}

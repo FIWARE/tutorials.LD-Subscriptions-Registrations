@@ -482,9 +482,10 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/csourceRegistrations/' \
 #### :five: リクエスト:
 
 ```console
-curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/csourceRegistrations/' \
+curl -G -iX GET 'http://localhost:1026/ngsi-ld/v1/csourceRegistrations/' \
 -H 'Accept: application/ld+json' \
--H 'Link: <https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
+-H 'Link: <https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'  \
+-d 'type=Building'
 ```
 
 #### レスポンス:
@@ -520,7 +521,7 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/csourceRegistrations/' \
 #### :six: リクエスト:
 
 ```console
-curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001' \
+curl -iX GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001' \
 -H 'Link: <https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
 -H 'Content-Type: application/json'
 ```
