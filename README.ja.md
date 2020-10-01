@@ -450,6 +450,16 @@ Context Broker A にレジストレーションする循環依存関係を回避
 
 ### レジストレーションを作成
 
+すべての NGSI-LD コンテキスト・プロバイダのレジストレーション・アクションは、`/ngsi-ld/v1/csourceRegistrations/`
+エンドポイントで実行されます。標準の CRUD マッピングが適用されます。`@context` は、`Link` ヘッダとして、または
+リクエストのボディ内で渡す必要があります。
+
+リクエストのボディは、次の変更を加えた同等の NGSI-v2 に似ています:
+
+-   NGSI-v2 `dataProvided` オブジェクトは、`information` という配列になりました
+-   NGSI-v2 属性は、`properties` と `relationships` の個別の配列に分割されました
+-   NGSI-v2 `provider.url`が `endpoint` に移動しました
+
 #### :four: リクエスト:
 
 ```console
@@ -479,6 +489,9 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/csourceRegistrations/' \
 
 ### レジストレーションの詳細を取得
 
+レジストレーションの詳細を取得するには、GETリクエストを `/ngsi-ld/v1/csourceRegistrations/` エンドポイントに送信し、
+`Link` ヘッダの適切な JSON-LD コンテキストとフィルタリングするエンティティの `type` を指定します。
+
 #### :five: リクエスト:
 
 ```console
@@ -489,6 +502,9 @@ curl -G -iX GET 'http://localhost:1026/ngsi-ld/v1/csourceRegistrations/' \
 ```
 
 #### レスポンス:
+
+レスポンスはレジストレーションの詳細を返します。この場合、`properties` の短い名前が `@context`
+とともに返されています。
 
 ```jsonld
 [
@@ -518,6 +534,11 @@ curl -G -iX GET 'http://localhost:1026/ngsi-ld/v1/csourceRegistrations/' \
 
 ### Store 1 から取得
 
+レジストレーションが設定されると、要求されたエンティティがリクエストされると、追加のレジストレーション済みプロパティと
+リレーションシップが透過的に返されます。 単純なレジストレーションの場合、エンティティ全体を取得するリクエストは
+レジストレーションされたエンドポイントにプロキシされます。部分的なレジストレーションの場合、プロパティと
+レジストレーションは Context Broker 内に保持されている既存のエンティティに追加されます。
+
 #### :six: リクエスト:
 
 ```console
@@ -526,7 +547,15 @@ curl -iX GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:sto
 -H 'Content-Type: application/json'
 ```
 
+> 執筆時点では、フェデレーションされた、Scorpio Broker の場合、このリクエストはローカル・エンティティのみの取得を
+> 示していることに注意してください。レジストレーションから転送されたデータは、代わりに次の方法で取得する必要があります:
+> `/ngsi-ld/v1/entities/?id=urn:ngsi-ld:Building:store001`
+
 #### レスポンス:
+
+レスポンスには、追加の `tweets` プロパティが含まれるようになりました。このプロパティは、
+`http://context-provider:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001`
+から取得した値を返します。例えば、フォワーディング・エンドポイント
 
 ```jsonld
 {
@@ -666,12 +695,18 @@ curl -L -X PATCH 'http://localhost:3000/static/tweets/ngsi-ld/v1/entities/urn:ng
 
 #### :nine: リクエスト:
 
+レジストレーションされた属性が Context Broker からリクエストされた場合、
+`http://context-provider:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001`
+から取得した更新された値を返します。例えば、フォワーディング・エンドポイント
+
 ```console
 curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001?attrs=tweets&options=keyValues' \
 -H 'Link: <https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
 ```
 
 #### レスポンス:
+
+これにより、前の PATCH リクエストで更新された値と一致するようにレスポンスが変更されます。
 
 ```jsonld
 {
@@ -734,6 +769,9 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:s
 ```
 
 #### レスポンス:
+
+これにより、Context Broker に送信されてからコンテキスト・プロバイダのエンドポイントにフォワーディングされた前の
+PATCH リクエストで更新された値と一致するようにレスポンスが変更されます。
 
 ```jsonld
 {
