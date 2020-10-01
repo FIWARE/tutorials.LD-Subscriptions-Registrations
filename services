@@ -9,7 +9,7 @@ set -e
 
 if (( $# != 1 )); then
     echo "Illegal number of parameters"
-    echo "usage: services [create|orion|scorpio|stop]"
+    echo "usage: services [create|orion|scorpio|stellio|stop]"
     exit 1
 fi
 
@@ -113,6 +113,15 @@ case "${command}" in
 		export CONTEXT_BROKER=scorpio:9090
 		loadData
 		;;
+	"stellio")
+		stoppingContainers 
+		echo -e "Starting four containers \033[1;Stellio\033[0m, \033[1mKafka\033[0m, \033[1mZookeeper\033[0m and a \033[1mPostgres\033[0m database."
+		echo -e "- \033[1;34mScorpio\033[0m is the context broker\n"
+		docker-compose --log-level ERROR -f docker-compose/stellio.yml -p fiware up -d --remove-orphans
+		sleep 5
+		export CONTEXT_BROKER=stellio:8080
+		loadData
+		;;
 	"stop")
 		stoppingContainers
 		;;
@@ -120,10 +129,11 @@ case "${command}" in
 		echo "Pulling Docker images"
 		docker-compose --log-level ERROR -f docker-compose/scorpio-aaio.yml pull
 		docker-compose --log-level ERROR -f docker-compose/orion-ld.yml pull
+		docker-compose --log-level ERROR -f docker-compose/stellio.yml pull
 		;;
 	*)
 		echo "Command not Found."
-		echo "usage: services [create|orion|scorpio|stop]"
+		echo "usage: services [create|orion|scorpio|stellio|stop]"
 		exit 127;
 		;;
 esac
