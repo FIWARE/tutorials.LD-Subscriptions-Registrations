@@ -19,10 +19,10 @@ The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also a
 
 -   このチュートリアルは[日本語](README.ja.md)でもご覧いただけます。
 
-
-:warning:  **Note:** This tutorial is designed for **NGSI-v2** developers looking to switch or upgrade systems to **NGSI-LD**, if you
-are building a linked data system from scratch or you are not already familiar with **NGSI-v2** then it is recommmended that you
-look directly at the [NGSI-LD developers tutorial](https://ngsi-ld-tutorials.readthedocs.io/) documentation.
+:warning: **Note:** This tutorial is designed for **NGSI-v2** developers looking to switch or upgrade systems to
+**NGSI-LD**, if you are building a linked data system from scratch or you are not already familiar with **NGSI-v2** then
+it is recommmended that you look directly at the
+[NGSI-LD developers tutorial](https://ngsi-ld-tutorials.readthedocs.io/) documentation.
 
 ## Contents
 
@@ -168,8 +168,9 @@ has been described in a [previous tutorial](https://github.com/FIWARE/tutorials.
 # Start Up
 
 All services can be initialised from the command-line by running the
-[services](https://github.com/FIWARE/tutorials.LD-Subscriptions-Registrations/blob/NGSI-v2/services) Bash script provided
-within the repository. Please clone the repository and create the necessary images by running the commands as shown:
+[services](https://github.com/FIWARE/tutorials.LD-Subscriptions-Registrations/blob/NGSI-v2/services) Bash script
+provided within the repository. Please clone the repository and create the necessary images by running the commands as
+shown:
 
 ```bash
 git clone https://github.com/FIWARE/tutorials.LD-Subscriptions-Registrations.git
@@ -393,7 +394,10 @@ multiple context providers. For a simple registration, all context requests are 
 | **DELETE** | Pass request to **Context Provider**                                        | Delete the entity within the **Context Provider**, Respond to the context broker with a status code |
 
 Effectively every simple registration is saying _"this entity is held elsewhere"_, but the entity data can be requested
-and modified via requests to this context broker.
+and modified via requests to this context broker. All context brokers should support simple registrations, and indeed,
+simple registrations such as these are necessary for the operation of federated arrays of context brokers working in
+large scale systems, where there is no concept of "entity exclusiveness", that is no entity is bound to an individual
+broker.
 
 For partial registrations the situation is more complex
 
@@ -404,13 +408,23 @@ For partial registrations the situation is more complex
 | **DELETE** | If deleting an entity, remove the complete local instance. If deleting locally held attributes remove them. If deleting attributes held in the **Context Provider**, pass request on to **Context Provider**                | Delete the entity attributes within the **Context Provider**, Respond to the context broker with a status code                       |
 
 Each partial registration is saying _"additional augmented context for this entity is held elsewhere"_. The entity data
-can be requested and modified via requests to this context broker.
+can be requested and modified via requests to this context broker. In this case the entity data is effectively bound to
+an individual context broker, and therefore may need special processing when running in a large-scale federated
+environment. Covering the special needs of the federation use-case is not the concern of this tutorial here.
 
-Note that within the context broker a single entity cannot partake in both a simple registration and a partial registration at the same time, as this would indicate that both the whole entity and only part of that entity are to be retrieved remotely and this is nonsensical. If such a situation is requested, the context broker will return with a `409` - **Conflict** HTTP response.
+Note that within the context broker a single entity cannot partake in both a simple registration and a partial
+registration at the same time, as this would indicate that both the whole entity and only part of that entity are to be
+retrieved remotely and this is nonsensical. If such a situation is requested, the context broker will return with a
+`409` - **Conflict** HTTP response.
 
-Also, a simple registration for an entity will be rejected if an entity already exists within the context broker, and a partial registration for an entity attribute will be rejected if the attribute exists within the context broker (or is already subject to a partial registration). The latter may be ovecome with the use of the `datasetId`.
+Also, a simple registration for an entity will be rejected if an entity already exists within the context broker, and a
+partial registration for an entity attribute will be rejected if the attribute exists within the context broker (or is
+already subject to a partial registration). The latter may be ovecome with the use of the `datasetId`.
 
-Internally the [X-Forwarded-For](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For) header is used to avoid circular dependencies  where **context broker A** registers an entity with **context broker B** which registers an entity with **context broker C** which registers an entity with **context broker A** again. The `X-Forwarded-For` Header is removed prior to responding to a client however.
+Internally the [X-Forwarded-For](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For) header is
+used to avoid circular dependencies where **context broker A** registers an entity with **context broker B** which
+registers an entity with **context broker C** which registers an entity with **context broker A** again. The
+`X-Forwarded-For` Header is removed prior to responding to a client however.
 
 With normal operation, the NGSI-LD response does not expose whether data collated from multiple sources is held directly
 within the context broker or whether the information has been retrieved externally. It is only when an error occurs
@@ -512,7 +526,9 @@ curl -iX GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:sto
 -H 'Content-Type: application/json'
 ```
 
-> Note that at the time of writing, for the federated Scorpio broker, this request indicates the retrieval of a local entity only - forwarded data from a registration must be retrieved using: `/ngsi-ld/v1/entities/?id=urn:ngsi-ld:Building:store001` instead.
+> Note that at the time of writing, for the federated Scorpio broker, this request indicates the retrieval of a local
+> entity only - forwarded data from a registration must be retrieved using:
+> `/ngsi-ld/v1/entities/?id=urn:ngsi-ld:Building:store001` instead.
 
 #### Response:
 
