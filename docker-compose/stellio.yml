@@ -148,7 +148,7 @@ services:
     hostname: tutorial
     container_name: fiware-tutorial
     depends_on:
-      - orion
+      - entity-service
     networks:
       default:
         aliases:
