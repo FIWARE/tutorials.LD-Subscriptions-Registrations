@@ -41,6 +41,14 @@ waitForScorpio () {
 	done
 }
 
+waitForMongo () {
+	echo -e "\n⏳ Waiting for \033[1mMongoDB\033[0m to be available\n"
+	while ! [ `docker inspect --format='{{.State.Health.Status}}' db-mongo` == "healthy" ]
+	do 
+		sleep 1
+	done
+}
+
 loadData () {
 	echo ""
 	docker run --rm -v $(pwd)/import-data:/import-data \
