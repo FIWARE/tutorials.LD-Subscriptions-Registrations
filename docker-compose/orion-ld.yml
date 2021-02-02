@@ -22,7 +22,7 @@ services:
   orion:
     image: fiware/orion-ld:${ORION_LD_VERSION}
     hostname: orion
-    container_name: fiware-orion-ld
+    container_name: fiware-orion
     depends_on:
       - mongo-db
     networks:
