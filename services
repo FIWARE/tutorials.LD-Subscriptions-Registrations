@@ -132,12 +132,15 @@ case "${command}" in
 		loadData
 		;;
 	"stop")
+		export $(cat .env | grep "#" -v)
 		stoppingContainers
 		;;
 	"start")
+		export $(cat .env | grep "#" -v)
 		./services orion
 		;;
 	"create")
+		export $(cat .env | grep "#" -v)
 		echo "Pulling Docker images"
 		docker-compose --log-level ERROR -f docker-compose/scorpio-aaio.yml pull
 		docker-compose --log-level ERROR -f docker-compose/orion-ld.yml pull
