@@ -1,5 +1,5 @@
 [![FIWARE Banner](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/fiware.png)](https://www.fiware.org/developers)
-[![NGSI LD](https://img.shields.io/badge/NGSI-LD-d6604d.svg)](https://www.etsi.org/deliver/etsi_gs/CIM/001_099/009/01.03.01_60/gs_cim009v010301p.pdf)
+[![NGSI LD](https://img.shields.io/badge/NGSI-LD-d6604d.svg)](https://www.etsi.org/deliver/etsi_gs/CIM/001_099/009/01.04.01_60/gs_cim009v010401p.pdf)
 
 [![FIWARE Core Context Management](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/core.svg)](https://github.com/FIWARE/catalogue/blob/master/core/README.md)
 [![License: MIT](https://img.shields.io/github/license/fiware/tutorials.Relationships-Linked-Data.svg)](https://opensource.org/licenses/MIT)
@@ -149,17 +149,17 @@ Context Provider NGSI proxy  も追加されました。 コンテキストを�
 
 したがって、アーキテクチャは次の4つの要素で構成されます。
 
--   [NGSI-LD](https://forge.etsi.org/swagger/ui/?url=https://forge.etsi.org/gitlab/NGSI-LD/NGSI-LD/raw/master/spec/updated/full_api.json)
+-   [NGSI-LD](https://forge.etsi.org/swagger/ui/?url=https://forge.etsi.org/rep/NGSI-LD/NGSI-LD/raw/master/spec/updated/generated/full_api.json)
     を使ってリクエストを受け取る [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/)
 -   基礎となる [MongoDB](https://www.mongodb.com/) データベース :
     -   データ・エンティティ、サブスクリプション、レジストレーションなどのコンテキスト・データ情報を保持するために
         Orion Context Broker によって使用されます
 -   **Context Provider NGSI** は、次のことができます :
-    -   [NGSI-LD](https://forge.etsi.org/swagger/ui/?url=https://forge.etsi.org/gitlab/NGSI-LD/NGSI-LD/raw/master/spec/updated/full_api.json#/)
+    -   [NGSI-LD](https://forge.etsi.org/swagger/ui/?url=https://forge.etsi.org/rep/NGSI-LD/NGSI-LD/raw/master/spec/updated/generated/full_api.json#/)
         を使用してリクエストを受信します
     -   独自の API を独自の形式で使用して、公開されているデータソースにリクエストを送信します
     -   コンテキスト・データを NGSI-lD 形式で
-        [NGSI-LD](https://forge.etsi.org/swagger/ui/?url=https://forge.etsi.org/gitlab/NGSI-LD/NGSI-LD/raw/master/spec/updated/full_api.json#/)
+        [NGSI-LD](https://forge.etsi.org/swagger/ui/?url=https://forge.etsi.org/rep/NGSI-LD/NGSI-LD/raw/master/spec/updated/generated/full_api.json#/)
         形式で Orion Context Broker に返します
 -   **在庫管理フロントエンド** は、次のことができます :
     -   ストア情報を表示
@@ -418,7 +418,7 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/subscriptions/'
 エンティティ・データは、この Context Broker へのリクエストを介してリクエストおよび変更できます。すべての
 Context Brokers は単純なレジストレーションをサポートする必要があります。実際、"エンティティの排他性"
 の概念がない、つまり、個々の broker にエンティティがバインドされていない大規模システムで動作する Context
-Brokers のフェデレーション・アレイの操作には、このような単純なレジストレーションが必要です。 
+Brokers のフェデレーション・アレイの操作には、このような単純なレジストレーションが必要です。
 
 部分レジストレーションの場合、状況はより複雑になります。
 
