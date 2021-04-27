@@ -491,6 +491,11 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/csourceRegistrations/' \
 }'
 ```
 
+> **注** `properties` は 1.1.1 NGSI-LD コア・コンテキストで定義されています。1.3.1 では、2つの別個の属性
+> (`propertyNames` と `relationshipNames`) に置き換えられる予定です。この変更は、GeoJSON-LD を完全に
+> サポートするために行われました。Context Broker は、更新されたコア・コンテキストをサポートする場合と
+> サポートしない場合があります。
+
 <a name="read-registration-details"/>
 
 ### レジストレーションの詳細を取得
