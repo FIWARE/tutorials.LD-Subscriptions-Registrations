@@ -1,5 +1,5 @@
 [![FIWARE Banner](https://fiware.github.io/tutorials.LD-Subscriptions-Registrations/img/fiware.png)](https://www.fiware.org/developers)
-[![NGSI LD](https://img.shields.io/badge/NGSI-LD-d6604d.svg)](https://www.etsi.org/deliver/etsi_gs/CIM/001_099/009/01.04.01_60/gs_cim009v010401p.pdf)
+[![NGSI LD](https://img.shields.io/badge/NGSI-LD-d6604d.svg)](https://www.etsi.org/deliver/etsi_gs/CIM/001_099/009/01.04.02_60/gs_cim009v010402p.pdf)
 
 [![FIWARE Core Context Management](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/core.svg)](https://github.com/FIWARE/catalogue/blob/master/core/README.md)
 [![License: MIT](https://img.shields.io/github/license/fiware/tutorials.Relationships-Linked-Data.svg)](https://opensource.org/licenses/MIT)
@@ -491,6 +491,11 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/csourceRegistrations/' \
 }'
 ```
 
+> **注** `properties` は 1.1.1 NGSI-LD コア・コンテキストで定義されています。1.3.1 では、2つの別個の属性
+> (`propertyNames` と `relationshipNames`) に置き換えられる予定です。この変更は、GeoJSON-LD を完全に
+> サポートするために行われました。Context Broker は、更新されたコア・コンテキストをサポートする場合と
+> サポートしない場合があります。
+
 <a name="read-registration-details"/>
 
 ### レジストレーションの詳細を取得
@@ -799,4 +804,4 @@ PATCH リクエストで更新された値と一致するようにレスポン�
 
 ## License
 
-[MIT](LICENSE) © 2020 FIWARE Foundation e.V.
+[MIT](LICENSE) © 2020-2021 FIWARE Foundation e.V.
