@@ -804,4 +804,4 @@ PATCH リクエストで更新された値と一致するようにレスポン�
 
 ## License
 
-[MIT](LICENSE) © 2020 FIWARE Foundation e.V.
+[MIT](LICENSE) © 2020-2021 FIWARE Foundation e.V.
