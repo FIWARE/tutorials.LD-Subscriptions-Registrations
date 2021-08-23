@@ -11,7 +11,8 @@ if (( $# == 2 )); then
     dockerCmd="docker-compose"
 fi
 
-if (( $# < 1 )); then    echo "Illegal number of parameters"
+if (( $# < 1 )); then
+    echo "Illegal number of parameters"
     echo "usage: services [create|orion|scorpio|stellio|stop]"
     exit 1
 fi
@@ -140,7 +141,7 @@ case "${command}" in
 		;;
 	"start")
 		export $(cat .env | grep "#" -v)
-		./services orion
+		./services orion $2
 		;;
 	"create")
 		export $(cat .env | grep "#" -v)
