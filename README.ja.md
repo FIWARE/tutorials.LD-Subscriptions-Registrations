@@ -487,7 +487,7 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/csourceRegistrations/' \
             ]
         }
     ],
-    "endpoint": "http://context-provider:3000/static/tweets"
+    "endpoint": "http://tutorial:3000/static/tweets"
 }'
 ```
 
@@ -523,7 +523,7 @@ curl -G -iX GET 'http://localhost:1026/ngsi-ld/v1/csourceRegistrations/' \
         "@context": "https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld",
         "id": "urn:ngsi-ld:ContextSourceRegistration:5e6242179c26be5aef9991d4",
         "type": "ContextSourceRegistration",
-        "endpoint": "http://context-provider:3000/static/tweets",
+        "endpoint": "http://tutorial:3000/static/tweets",
         "information": [
             {
                 "entities": [
@@ -565,7 +565,7 @@ curl -iX GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:sto
 #### レスポンス:
 
 レスポンスには、追加の `tweets` プロパティが含まれるようになりました。このプロパティは、
-`http://context-provider:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001`
+`http://tutorial:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001`
 から取得した値を返します。例えば、フォワーディング・エンドポイント
 
 ```jsonld
@@ -707,7 +707,7 @@ curl -L -X PATCH 'http://localhost:3000/static/tweets/ngsi-ld/v1/entities/urn:ng
 #### :nine: リクエスト:
 
 レジストレーションされた属性が Context Broker からリクエストされた場合、
-`http://context-provider:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001`
+`http://tutorial:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001`
 から取得した更新された値を返します。例えば、フォワーディング・エンドポイント
 
 ```console
