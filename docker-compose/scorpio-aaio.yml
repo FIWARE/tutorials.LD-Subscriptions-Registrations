@@ -17,9 +17,10 @@
 # see: https://github.com/FIWARE/helm-charts/
 #
 version: "3.8"
-
 services:
   zookeeper:
+    labels:
+      org.fiware: 'tutorial'
     image: zookeeper
     hostname: zookeeper
     container_name: zookeeper
@@ -27,8 +28,12 @@ services:
       - default
     ports:
       - "2181"
+    logging:
+      driver: none
   kafka:
-    image: wurstmeister/kafka
+    labels:
+      org.fiware: 'tutorial'
+    image: bitnami/kafka
     hostname: kafka
     container_name: kafka
     networks:
@@ -39,27 +44,19 @@ services:
       KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_LOG_RETENTION_MS: 10000
+      KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS: 5000
+      ALLOW_PLAINTEXT_LISTENER: "yes"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - zookeeper
-      
-  scorpio:
-    image: scorpiobroker/scorpio:scorpio-aaio_${SCORPIO_VERSION}
-    hostname: scorpio
-    container_name: fiware-scorpio
-    networks:
-      - default
-    ports:
-      - "${SCORPIO_PORT}:9090"
-    depends_on:
-      - kafka
-      - postgres
-    healthcheck:
-      test: curl --fail -s http://scorpio:${SCORPIO_PORT}/scorpio/v1/info/ || exit 1
-
+    logging:
+      driver: none
   postgres:
-    image: mdillon/postgis
+    labels:
+      org.fiware: 'tutorial'
+    image: postgis/postgis
     hostname: postgres
     container_name: db-postgres
     networks:
@@ -70,6 +67,21 @@ services:
       POSTGRES_USER: ngb
       POSTGRES_PASSWORD: ngb
       POSTGRES_DB: ngb
+    logging:
+      driver: none
+  scorpio:
+    labels:
+      org.fiware: 'tutorial'
+    image: scorpiobroker/scorpio:scorpio-aaio-no-eureka_${SCORPIO_VERSION}
+    hostname: scorpio
+    container_name: fiware-scorpio
+    networks:
+      - default
+    ports:
+      - "${SCORPIO_PORT}:9090"
+    depends_on:
+      - postgres
+      - kafka
 
   # Tutorial acts as a series of dummy IoT Sensors over HTTP and connects to the Scorpio Broker
   tutorial:
@@ -80,4 +92,7 @@ services:
       - DUMMY_DEVICES_PAYLOAD=ULTRALIGHT
       - CONTEXT_BROKER=http://scorpio:${SCORPIO_PORT}/ngsi-ld/v1 # URL of the context broker to update context
 
-
+networks:
+  default:
+    labels:
+      org.fiware: 'tutorial'
