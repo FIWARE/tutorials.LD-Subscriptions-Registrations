@@ -384,9 +384,52 @@ Context Registrations allow some (or all) data within an entity to be provided b
 be another full context-provider a separate micro-service which only responds to a subset of the NGSI-LD endpoints.
 However, there needs to be a contract created as to who supplies what.
 
-All registrations can be subdivided into one of two types. Simple registrations where a single context provider is
-responsible for the maintenance of the whole entity, and partial registrations where attributes are spread across
-multiple context providers. For a simple registration, all context requests are forwarded
+All **NGSI-LD** registrations can be subdivided into one of four types:
+
+### Additive Registrations
+
+A Context Broker is permitted to hold context data about the Entities and Attributes locally itself, and also obtain
+data from (possibly multiple) external sources
+
+-   An **inclusive** Context Source Registration specifies that the Context Broker considers all registered Context
+    Sources as equals and will distribute operations to those Context Sources even if relevant context data is available
+    directly within the Context Broker itself (in which case, all results will be integrated in the final response).
+    This federative and is the default mode of operation.
+
+-   An **auxiliary** Context Source Registration never overrides data held directly within a Context Broker. Auxiliary
+    distributed operations are limited to context information consumption operations (i.e. entity **GET** operations).
+    Context data from auxiliary context sources is only included if it is supplementary to the context data otherwise
+    available to the Context Broker.
+
+### Proxied Registrations
+
+A Context Broker is not permitted to hold context data about the Entities and Attributes locally itself. All context
+data is obtained from the external registered sources.
+
+-   An **exclusive** Context Source Registration specifies that all of the registered context data is held in a single
+    location external to the Context Broker. The Context Broker itself holds no data locally about the registered
+    Attributes and no overlapping proxied Context Source Registrations shall be supported for the same combination of
+    registered Attributes on the Entity. An exclusive registration must be fully specified. It always relates to
+    specific Attributes found on a single Entity. It can be used for actuations
+
+-   A **redirect** Context Source Registration also specifies that the registered context data is held in a location
+    external to the Context Broker, but potentially multiple distinct redirect registrations can apply at the same time.
+
+### Accepted Operations
+
+**NGSI-LD** also defines groups of operations that are allowed on the registrant. The default group is called
+`federationOps` and includes all entity **GET** operations. Three other common operational groups are also defined
+`updateOps` (for actuators), `retrieveOps` (for "lazy" sensors) and `redirectionOps` (for hierarchical broker
+architectures). The details won't be covered here, but it should be noted that unless specified, the default **NGSI-LD**
+operation is `federationOps` using `inclusive` mode, whereas the default **NGSI-v2** operation is
+`updateOps + retrieveOps` using `exclusive` mode.
+
+For simplicity, for **NGSI-v2** - **NGSI-LD** comparison, this tutorial will only deal with `exclusive` mode, which is
+the only mode offered by **NGSI-v2** brokers.
+
+With the **NGSI-LD** `exclusive` mode, all registrations can be subdivided into one of two types. Simple registrations
+where a single context provider is responsible for the maintenance of the whole entity, and partial registrations where
+attributes are spread across multiple context providers. For a simple registration, all context requests are forwarded
 
 | Request    | Action at **Context Broker**                                                | Action at **Context Provider**                                                                      |
 | ---------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
@@ -438,11 +481,17 @@ All NGSI-LD Context Provider Registration actions take place on the `/ngsi-ld/v1
 standard CRUD mappings apply. The `@context` must be passed either as a `Link` header or within the main body of the
 request.
 
-The body of the request is similar to the NGSI-v2 equivalent with the following modifications:
+The body of the request is similar to the **NGSI-v2** equivalent with the following modifications:
 
--   The NGSI-v2 `dataProvided` object is now an array called `information`.
--   NGSI-v2 `attrs` have been split into separate arrays of `properties` and `relationships`
--   The NGSI-v2 `provider.url` has moved up to `endpoint`
+-   The **NGSI-v2** `dataProvided` object is now an array called `information`.
+-   **NGSI-v2** `attrs` have been split into separate arrays of `propertyNames` and `relationshipNames`
+-   The **NGSI-v2** `provider.url` has moved up to `endpoint`
+-   The **NGSI-LD** `mode` and `operations` are now required - if they are missing the defaults are `federationOps` and
+    `inclusive` which does not match the default **NGSI-v2** `supportedForwardingMode`
+
+`contextSourceInfo` usually defines additional HTTP Headers which are passed to the registrant, but `jsonldContext` is a
+special key which fires a JSON-LD expansion/compaction operation to ensure that the attribute names within the request
+match the expected **NGSI-v2** attribute names.
 
 #### :four: Request:
 
@@ -460,18 +509,28 @@ curl -iX POST 'http://localhost:1026/ngsi-ld/v1/csourceRegistrations/' \
                     "id": "urn:ngsi-ld:Building:store001"
                 }
             ],
-            "properties": [
+            "propertyNames": [
                 "tweets"
             ]
         }
+    ],
+    "contextSourceInfo":[
+        {
+            "key": "jsonldContext",
+            "value": "https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld"
+        }
+    ],
+    "mode": "exclusive",
+    "operations": [
+        "updateOps", "retrieveOps"
     ],
     "endpoint": "http://tutorial:3000/static/tweets"
 }'
 ```
 
-> **Note** that `properties` is defined in the 1.1.1 NGSI-LD core context. In 1.3.1, it is due to be replaced with two
-> separate attributes - `propertyNames` and `relationshipNames` - this change has been made in order to offer full
-> GeoJSON-LD support. Your context broker may or may not support the updated core context
+> **Note** that `propertyNames` and `relationshipNames` have replaced the older `properties` attribute that was is
+> defined in the 1.1.1 NGSI-LD core context. It was replaced in order to offer full GeoJSON-LD support. Your context
+> broker may or may not support the updated core context
 
 ### Read Registration Details
 
@@ -511,6 +570,16 @@ returned, along with the `@context`.
                     "tweets"
                 ]
             }
+        ],
+        "contextSourceInfo":[
+            {
+                "key": "jsonldContext",
+                "value": "https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld"
+            }
+        ],
+        "mode": "exclusive",
+        "operations": [
+            "updateOps", "retrieveOps"
         ]
     }
 ]
@@ -538,8 +607,7 @@ curl -iX GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:sto
 #### Response:
 
 The response now holds an additional `tweets` Property, which returns the values obtained from
-`http://tutorial:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001` - i.e. the forwarding
-endpoint.
+`http://tutorial:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001` - i.e. the forwarding endpoint.
 
 ```jsonld
 {
@@ -647,7 +715,7 @@ the response resembles any standard NGSI-LD request.
             "You can sleep under it beneath the stars which shine so redly on the desert world of Kakrafoon;",
             "Use it to sail a mini raft down the slow heavy river Moth;",
             "Wet it for use in hand-to-hand-combat;",
-            "Wrap it round your head to ward off noxious fumes or to avoid the gaze of the Ravenous Bugblatter Beast of Traal  (a mindboggingly stupid animal, it assumes that if you can’t see it, it can’t see you – daft as a bush, but very, very ravenous);",
+            "Wrap it round your head to ward off noxious fumes or to avoid the gaze of the Ravenous Bugblatter Beast of Traal (a mindboggingly stupid animal, it assumes that if you can’t see it, it can’t see you – daft as a bush, but very, very ravenous);",
             "You can wave your towel in emergencies as a distress signal, and of course dry yourself off with it if it still seems to be clean enough."
         ]
     }
@@ -680,8 +748,7 @@ curl -L -X PATCH 'http://localhost:3000/static/tweets/ngsi-ld/v1/entities/urn:ng
 #### :nine: Request:
 
 If the regisitered attribute is requested from the context broker, it returns the _updated_ values obtained from
-`http://tutorial:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001` - i.e. the forwarding
-endpoint.
+`http://tutorial:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001` - i.e. the forwarding endpoint.
 
 ```console
 curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001?attrs=tweets&options=keyValues' \
