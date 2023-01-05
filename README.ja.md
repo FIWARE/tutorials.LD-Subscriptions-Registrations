@@ -245,7 +245,7 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
   "type": "Subscription",
   "entities": [{"type": "Shelf"}],
   "watchedAttributes": ["numberOfItems"],
-  "q": "numberOfItems<10;locatedIn==urn:ngsi-ld:Building:store001",
+  "q": "numberOfItems<10;locatedIn==%22urn:ngsi-ld:Building:store001%22",
   "notification": {
     "attributes": ["numberOfItems", "stocks", "locatedIn"],
     "format": "keyValues",
@@ -277,7 +277,7 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
   "type": "Subscription",
   "entities": [{"type": "Shelf"}],
   "watchedAttributes": ["numberOfItems"],
-  "q": "numberOfItems<10;locatedIn==urn:ngsi-ld:Building:store002",
+  "q": "numberOfItems<10;locatedIn==%22urn:ngsi-ld:Building:store002%22",
   "notification": {
     "attributes": ["numberOfItems", "stocks", "locatedIn"],
     "format": "normalized",
@@ -309,7 +309,7 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/subscriptions/'
 ため、`q` 属性内のパラメータは完全な URIs を使用するように拡張されました。2つのサブスクリプションによって提供される
 ペイロードの違いについては、以下で説明します。
 
-```jsonld
+```json
 [
     {
         "id": "urn:ngsi-ld:Subscription:5e62405ee232da3a07b5fa7f",
@@ -323,7 +323,7 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/subscriptions/'
         "watchedAttributes": [
             "numberOfItems"
         ],
-        "q": "https://fiware.github.io/tutorials.Step-by-Step/schema/numberOfItems<10;https://fiware.github.io/tutorials.Step-by-Step/schema/locatedIn==urn:ngsi-ld:Building:store001",
+        "q": "https://fiware.github.io/tutorials.Step-by-Step/schema/numberOfItems<10;https://fiware.github.io/tutorials.Step-by-Step/schema/locatedIn==%22urn:ngsi-ld:Building:store001%22",
         "notification": {
             "attributes": [
                 "numberOfItems",
@@ -350,7 +350,7 @@ curl -L -X GET 'http://localhost:1026/ngsi-ld/v1/subscriptions/'
         "watchedAttributes": [
             "numberOfItems"
         ],
-        "q": "https://fiware.github.io/tutorials.Step-by-Step/schema/numberOfItems<10;https://fiware.github.io/tutorials.Step-by-Step/schema/locatedIn==urn:ngsi-ld:Building:store002",
+        "q": "https://fiware.github.io/tutorials.Step-by-Step/schema/numberOfItems<10;https://fiware.github.io/tutorials.Step-by-Step/schema/locatedIn==%22urn:ngsi-ld:Building:store002%22",
         "notification": {
             "attributes": [
                 "numberOfItems",
