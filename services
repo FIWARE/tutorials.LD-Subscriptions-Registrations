@@ -94,12 +94,12 @@ waitForUserContext () {
 
 waitForCoreContext () {
 	echo -e "\n⏳ Checking availability of \033[1m core @context\033[0m from ETSI\n"
-	getHeartbeat "${CORE_CONTEXT}"
+	eval "response=$(docker run --rm curlimages/curl -s -o /dev/null -w "%{http_code}" "$CORE_CONTEXT")"
 	while [ "${response}" -eq 000 ]
 	do
 		echo -e "\n@context HTTP state: ${response} (waiting for 200)"
 		pause 3
-		getHeartbeat "${CORE_CONTEXT}"
+		eval "response=$(docker run --rm curlimages/curl -s -o /dev/null -w "%{http_code}" "$CORE_CONTEXT")"
 	done
 }
 
