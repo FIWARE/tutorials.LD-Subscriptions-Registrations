@@ -49,8 +49,6 @@ services:
     image: fiware/tutorials.context-provider
     hostname: tutorial
     container_name: fiware-tutorial
-    depends_on:
-      - orion
     networks:
       default:
         aliases:

@@ -205,7 +205,7 @@ case "${command}" in
 		echo -e "- \033[1;34mStellio\033[0m is the context broker"
 		echo -e "- Data models \033[1m@context\033[0m (Smart Supermarket) is supplied externally"
 		echo ""
-		${dockerCmd}  -f docker-compose/stellio.yml up -d --remove-orphans --renew-anon-volumes
+		${dockerCmd} -f docker-compose/common.yml -f docker-compose/stellio.yml up -d --remove-orphans --renew-anon-volumes
 		displayServices stellio
 		waitForStellio
 		;;
