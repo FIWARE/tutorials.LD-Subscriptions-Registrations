@@ -404,7 +404,7 @@ curl -s -o /dev/null -X POST \
     "price": {"type": "Property", "value": 0.99, 
       "currency": {"type": "Property", "value": "EUR"}},
     "size": {"type": "Property", "value": "S"},
-    "name": {"type": "Property", "value": "Beer"},
+    "name": {"type": "Property", "value": "Apples"},
     "@context": "'"${TUTORIAL_DATA_MODELS_CONTEXT}"'"
 }'
 
@@ -417,7 +417,7 @@ curl -s -o /dev/null -X POST \
     "price": {"type": "Property", "value": 10.99, 
       "currency": {"type": "Property", "value": "EUR"}},
     "size": {"type": "Property", "value": "M"},
-    "name": {"type": "Property", "value": "Red Wine"},
+    "name": {"type": "Property", "value": "Bananas"},
     "@context": "'"${TUTORIAL_DATA_MODELS_CONTEXT}"'"
 }'
 
@@ -430,7 +430,7 @@ curl -s -o /dev/null -X POST \
     "price": {"type": "Property", "value": 14.99, 
       "currency": {"type": "Property", "value": "EUR"}},
     "size": {"type": "Property", "value": "M"},
-    "name": {"type": "Property", "value": "White Wine"},
+    "name": {"type": "Property", "value": "Coconuts"},
     "@context": "'"${TUTORIAL_DATA_MODELS_CONTEXT}"'"
 }'
 
@@ -443,7 +443,7 @@ curl -s -o /dev/null -X POST \
     "price": {"type": "Property", "value": 50.00, 
       "currency": {"type": "Property", "value": "EUR"}},
     "size": {"type": "Property", "value": "XL"},
-    "name": {"type": "Property", "value": "Vodka"},
+    "name": {"type": "Property", "value": "Melons"},
     "@context": "'"${TUTORIAL_DATA_MODELS_CONTEXT}"'"
 }'
 
@@ -456,7 +456,7 @@ curl -s -o /dev/null -X POST \
     "price": {"type": "Property", "value": 0.99, 
       "currency": {"type": "Property", "value": "EUR"}},
     "size": {"type": "Property", "value": "S"},
-    "name": {"type": "Property", "value": "Lager"},
+    "name": {"type": "Property", "value": "Kiwi Fruits"},
     "@context": "'"${TUTORIAL_DATA_MODELS_CONTEXT}"'"
 }'
 
@@ -469,7 +469,7 @@ curl -s -o /dev/null -X POST \
     "price": {"type": "Property", "value": 0.99, 
       "currency": {"type": "Property", "value": "EUR"}},
     "size": {"type": "Property", "value": "S"},
-    "name": {"type": "Property", "value": "Whisky"},
+    "name": {"type": "Property", "value": "Strawberries"},
     "@context": "'"${TUTORIAL_DATA_MODELS_CONTEXT}"'"
 }'
 
@@ -482,7 +482,7 @@ curl -s -o /dev/null -X POST \
     "price": {"type": "Property", "value": 0.99, 
       "currency": {"type": "Property", "value": "EUR"}},
     "size": {"type": "Property", "value": "S"},
-    "name": {"type": "Property", "value": "Gin"},
+    "name": {"type": "Property", "value": "Raspberries"},
     "@context": "'"${TUTORIAL_DATA_MODELS_CONTEXT}"'"
 }'
 
@@ -495,7 +495,7 @@ curl -s -o /dev/null -X POST \
     "price": {"type": "Property", "value": 0.99, 
       "currency": {"type": "Property", "value": "EUR"}},
     "size": {"type": "Property", "value": "S"},
-    "name": {"type": "Property", "value": "Apple Juice"},
+    "name": {"type": "Property", "value": "Pineapples"},
     "@context": "'"${TUTORIAL_DATA_MODELS_CONTEXT}"'"
 }'
 
@@ -508,7 +508,7 @@ curl -s -o /dev/null -X POST \
     "price": {"type": "Property", "value": 0.99, 
       "currency": {"type": "Property", "value": "EUR"}},
     "size": {"type": "Property", "value": "S"},
-    "name": {"type": "Property", "value": "Orange Juice"},
+    "name": {"type": "Property", "value": "Oranges"},
     "@context": "'"${TUTORIAL_DATA_MODELS_CONTEXT}"'"
 }'
 
