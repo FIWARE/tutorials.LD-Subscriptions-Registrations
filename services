@@ -58,7 +58,7 @@ waitForScorpio () {
 	while [ "${response}" -eq 000 ]
 	do
 		echo -e "Context Broker HTTP state: ${response} (waiting for 404)"
-		pause 60
+		pause 6
 		getHeartbeat "${SCORPIO}"
 	done
 }
@@ -114,7 +114,7 @@ waitForMongo () {
 loadData () {
 	echo ""
 	waitForUserContext
-	docker run --rm -v $(pwd)/import-data:/import-data \
+	docker run  -v $(pwd)/import-data:/import-data \
 		--network fiware_default \
 		-e CONTEXT_BROKER=${CONTEXT_BROKER} \
 		-e TUTORIAL_DATA_MODELS_CONTEXT=${CONTEXT} \
@@ -190,7 +190,7 @@ case "${command}" in
 		echo -e "- \033[1;34mScorpio\033[0m is the context broker"
 		echo -e "- Data models \033[1m@context\033[0m (Smart Supermarket) is supplied externally"
 		echo ""
-		${dockerCmd} -f docker-compose/common.yml -f docker-compose/scorpio-aaio.yml up -d --remove-orphans --renew-anon-volumes
+		${dockerCmd} -f docker-compose/common.yml -f docker-compose/scorpio.yml up -d --remove-orphans --renew-anon-volumes
 		waitForMongo
 		waitForScorpio
 		export CONTEXT_BROKER=scorpio:9090
@@ -221,7 +221,7 @@ case "${command}" in
 		export $(cat .env | grep "#" -v)
 		echo "Pulling Docker images"
 		docker pull -q quay.io/curl/curl
-		${dockerCmd} -f docker-compose/common.yml -f docker-compose/scorpio-aaio.yml -f docker-compose/orion-ld.yml -f docker-compose/stellio.yml pull
+		${dockerCmd} -f docker-compose/common.yml -f docker-compose/scorpio.yml -f docker-compose/orion-ld.yml -f docker-compose/stellio.yml pull
 		;;
 	*)
 		echo "Command not Found."
