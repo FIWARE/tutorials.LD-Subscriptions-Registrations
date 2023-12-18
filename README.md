@@ -20,9 +20,10 @@ The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also a
 
 -   このチュートリアルは[日本語](README.ja.md)でもご覧いただけます。
 
-:warning: **Note:** This tutorial is designed for **NGSI-v2** developers looking to switch or upgrade systems to
-**NGSI-LD**, if you are building a linked data system from scratch or you are not already familiar with **NGSI-v2** then
-it is recommmended that you look directly at the
+> [!NOTE]
+> This tutorial is designed for **NGSI-v2** developers looking to switch or upgrade systems to
+> **NGSI-LD**, if you are building a linked data system from scratch or you are not already familiar with **NGSI-v2** then
+> it is recommmended that you look directly at the
 [NGSI-LD developers tutorial](https://ngsi-ld-tutorials.readthedocs.io/) documentation.
 
 ## Contents
@@ -181,7 +182,8 @@ git checkout NGSI-v2
 ./services orion
 ```
 
-> **Note:** If you want to clean up and start over again you can do so with the following command:
+> [!NOTE]
+> If you want to clean up and start over again you can do so with the following command:
 >
 > ```
 > ./services stop
@@ -516,7 +518,8 @@ curl -iX POST 'http://localhost:1026/ngsi-ld/v1/csourceRegistrations/' \
 }'
 ```
 
-> **Note** that `propertyNames` and `relationshipNames` have replaced the older `properties` attribute that was is
+> [!NOTE]
+> Note that `propertyNames` and `relationshipNames` have replaced the older `properties` attribute that was is
 > defined in the 1.1.1 NGSI-LD core context. It was replaced in order to offer full GeoJSON-LD support. Your context
 > broker may or may not support the updated core context
 
