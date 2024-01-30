@@ -41,10 +41,10 @@ getHeartbeat(){
 	eval "response=$(docker run --network fiware_default --rm quay.io/curl/curl -s -o /dev/null -w "%{http_code}" "$1")"
 }
 
-waitForOrion () {
+waitForOrionLD () {
 	echo -e "\n⏳ Waiting for \033[1;34mOrion-LD\033[0m to be available\n"
 	
-	while ! [ `docker inspect --format='{{.State.Health.Status}}' fiware-orion` == "healthy" ]
+	while ! [ `docker inspect --format='{{.State.Health.Status}}' fiware-orion-ld` == "healthy" ]
 	do
 		echo -e "\nContext Broker HTTP state: ${response} (waiting for 200)"
 		pause 6
@@ -177,7 +177,7 @@ case "${command}" in
 		${dockerCmd} -f docker-compose/common.yml -f docker-compose/orion-ld.yml up -d --remove-orphans --renew-anon-volumes
 		waitForMongo
 		addDatabaseIndex
-		waitForOrion
+		waitForOrionLD
 		export CONTEXT_BROKER=orion:1026
 		loadData
 		displayServices fiware
