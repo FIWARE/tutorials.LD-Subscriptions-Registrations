@@ -74,7 +74,7 @@
         "mcc": "fiware:mcc",
         "mnc": "fiware:mnc",
         "motion": "https://w3id.org/saref#motion",
-        "name": "ngsi-ld:name",
+        "name": "schema:name",
         "numberOfItems": "tutorial:numberOfItems",
         "observedAt": "ngsi-ld:observedAt",
         "occupier": "fiware:occupier",
