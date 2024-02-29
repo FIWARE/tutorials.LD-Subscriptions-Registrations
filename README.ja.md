@@ -189,7 +189,7 @@ git clone https://github.com/FIWARE/tutorials.LD-Subscriptions-Registrations.git
 cd tutorials.LD-Subscriptions-Registrations
 git checkout NGSI-v2
 
-./services orion
+./services orion|scorpio|stellio
 ```
 
 > **注:** クリーンアップして最初からやり直す場合は、次のコマンドで実行できます :
