@@ -405,6 +405,17 @@ data is obtained from the external registered sources.
 -   A **redirect** Context Source Registration also specifies that the registered context data is held in a location
     external to the Context Broker, but potentially multiple distinct redirect registrations can apply at the same time.
 
+
+> [!NOTE]
+> Broadly speaking, the default mode of registration in NGSI-v2 can be said to be the equivalent of an **exclusive** registration in NGSI-LD.
+> Examples of the other NGSI-LD registration modes used in NGSI-LD data spacesa and _systems-of-systems_ can be found in a separate,
+> [dedicated tutorial](https://github.com/FIWARE/tutorials.Context-Providers/tree/NGSI-LD).
+>
+> The **inclusive**, **auxiliary**, and **redirect** modes of NGSI-LD registration have no direct equivalent in NGSI-v2. However, it remains
+> possible to attach NGSI-v2 data sources into an NGSI-LD data space using a proxy serving a fixed `@context` - this is described in more detail in a
+> [separate tutorial](https://github.com/FIWARE/tutorials.Linked-Data/tree/NGSI-LD)
+
+
 ### Accepted Operations
 
 **NGSI-LD** also defines groups of operations that are allowed on the registrant. The default group is called
