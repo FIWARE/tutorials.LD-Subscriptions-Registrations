@@ -40,7 +40,7 @@ The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also a
     -   [Stock Management frontend](#stock-management-frontend)
 -   [Prerequisites](#prerequisites)
     -   [Docker](#docker)
-    -   [Cygwin](#cygwin)
+    -   [WSL](#wsl)
 -   [Architecture](#architecture)
 -   [Start Up](#start-up)
 -   [Interactions between Components](#interactions-between-components)
@@ -128,10 +128,11 @@ is used configure the required services for the application. This means all cont
 single command. Docker Compose is installed by default as part of Docker for Windows and Docker for Mac, however Linux
 users will need to follow the instructions found [here](https://docs.docker.com/compose/install/)
 
-## Cygwin
+## WSL
 
-We will start up our services using a simple bash script. Windows users should download [cygwin](http://www.cygwin.com/)
-to provide a command-line functionality similar to a Linux distribution on Windows.
+We will start up our services using a simple bash script. Windows users should download the
+[Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install) to provide a command-line
+functionality similar to a Linux distribution on Windows.
 
 # Architecture
 
