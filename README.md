@@ -25,10 +25,10 @@ The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also a
 -   このチュートリアルは[日本語](README.ja.md)でもご覧いただけます。
 
 > [!NOTE]
-> This tutorial is designed for **NGSI-v2** developers looking to switch or upgrade systems to
-> **NGSI-LD**, if you are building a linked data system from scratch or you are not already familiar with **NGSI-v2** then
-> it is recommmended that you look directly at the
-[NGSI-LD developers tutorial](https://ngsi-ld-tutorials.readthedocs.io/) documentation.
+>
+> This tutorial is designed for **NGSI-v2** developers looking to switch or upgrade systems to **NGSI-LD**, if you are
+> building a linked data system from scratch or you are not already familiar with **NGSI-v2** then it is recommmended
+> that you look directly at the [NGSI-LD developers tutorial](https://ngsi-ld-tutorials.readthedocs.io/) documentation.
 
 ## Contents
 
@@ -187,6 +187,7 @@ git checkout NGSI-v2
 ```
 
 > [!NOTE]
+>
 > If you want to clean up and start over again you can do so with the following command:
 >
 > ```
@@ -409,16 +410,17 @@ data is obtained from the external registered sources.
 -   A **redirect** Context Source Registration also specifies that the registered context data is held in a location
     external to the Context Broker, but potentially multiple distinct redirect registrations can apply at the same time.
 
-
 > [!NOTE]
-> Broadly speaking, the default mode of registration in NGSI-v2 can be said to be the equivalent of an **exclusive** registration in NGSI-LD.
-> Examples of the other NGSI-LD registration modes used in NGSI-LD data spacesa and _systems-of-systems_ can be found in a separate,
+>
+> Broadly speaking, the default mode of registration in NGSI-v2 can be said to be the equivalent of an **exclusive**
+> registration in NGSI-LD. Examples of the other NGSI-LD registration modes used in NGSI-LD data spacesa and
+> _systems-of-systems_ can be found in a separate,
 > [dedicated tutorial](https://github.com/FIWARE/tutorials.Context-Providers/tree/NGSI-LD).
 >
-> The **inclusive**, **auxiliary**, and **redirect** modes of NGSI-LD registration have no direct equivalent in NGSI-v2. However, it remains
-> possible to attach NGSI-v2 data sources into an NGSI-LD data space using a proxy serving a fixed `@context` - this is described in more detail in a
+> The **inclusive**, **auxiliary**, and **redirect** modes of NGSI-LD registration have no direct equivalent in NGSI-v2.
+> However, it remains possible to attach NGSI-v2 data sources into an NGSI-LD data space using a proxy serving a fixed
+> `@context` - this is described in more detail in a
 > [separate tutorial](https://github.com/FIWARE/tutorials.Linked-Data/tree/NGSI-LD)
-
 
 ### Accepted Operations
 
@@ -534,9 +536,10 @@ curl -iX POST 'http://localhost:1026/ngsi-ld/v1/csourceRegistrations/' \
 ```
 
 > [!NOTE]
-> Note that `propertyNames` and `relationshipNames` have replaced the older `properties` attribute that was is
-> defined in the 1.1.1 NGSI-LD core context. It was replaced in order to offer full GeoJSON-LD support. Your context
-> broker may or may not support the updated core context
+>
+> Note that `propertyNames` and `relationshipNames` have replaced the older `properties` attribute that was is defined
+> in the 1.1.1 NGSI-LD core context. It was replaced in order to offer full GeoJSON-LD support. Your context broker may
+> or may not support the updated core context
 
 ### Read Registration Details
 
@@ -572,21 +575,17 @@ returned, along with the `@context`.
                         "type": "Building"
                     }
                 ],
-                "properties": [
-                    "tweets"
-                ]
+                "properties": ["tweets"]
             }
         ],
-        "contextSourceInfo":[
+        "contextSourceInfo": [
             {
                 "key": "jsonldContext",
                 "value": "http://context/user-context.jsonld"
             }
         ],
         "mode": "exclusive",
-        "operations": [
-            "updateOps", "retrieveOps"
-        ]
+        "operations": ["updateOps", "retrieveOps"]
     }
 ]
 ```
@@ -622,11 +621,7 @@ The response now holds an additional `tweets` Property, which returns the values
     "type": "Building",
     "furniture": {
         "type": "Relationship",
-        "object": [
-            "urn:ngsi-ld:Shelf:unit001",
-            "urn:ngsi-ld:Shelf:unit002",
-            "urn:ngsi-ld:Shelf:unit003"
-        ]
+        "object": ["urn:ngsi-ld:Shelf:unit001", "urn:ngsi-ld:Shelf:unit002", "urn:ngsi-ld:Shelf:unit003"]
     },
     "address": {
         "type": "Property",
@@ -653,10 +648,7 @@ The response now holds an additional `tweets` Property, which returns the values
         "type": "GeoProperty",
         "value": {
             "type": "Point",
-            "coordinates": [
-                13.3986,
-                52.5547
-            ]
+            "coordinates": [13.3986, 52.5547]
         }
     },
     "tweets": {
@@ -695,7 +687,7 @@ in this case a request is merely returning the full `tweets` attribute.
 
 The same request is made by the context broker itself when querying for registered attributes
 
-#### 7️⃣  Request:
+#### 7️⃣ Request:
 
 ```console
 curl -L -X GET 'http://localhost:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001?attrs=tweets' \
@@ -733,7 +725,7 @@ the response resembles any standard NGSI-LD request.
 For a read-write interface it is also possible to amend context data by making a PATCH request to the relevant
 `ngsi-ld/v1/entities/<entity-id>/attrs` endpoint.
 
-#### 8️⃣  Request:
+#### 8️⃣ Request:
 
 ```console
 curl -L -X PATCH 'http://localhost:3000/static/tweets/ngsi-ld/v1/entities/urn:ngsi-ld:Building:store001/attrs' \
@@ -833,10 +825,7 @@ and then forwarded to the context provider endpoint.
     "@context": "http://context/user-context.jsonld",
     "id": "urn:ngsi-ld:Building:store001",
     "type": "Building",
-    "tweets": [
-        "This must be Thursday",
-        "I never could get the hang of Thursdays."
-    ]
+    "tweets": ["This must be Thursday", "I never could get the hang of Thursdays."]
 }
 ```
 
