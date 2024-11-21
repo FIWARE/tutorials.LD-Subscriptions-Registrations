@@ -203,6 +203,12 @@ git checkout NGSI-v2
 
 ## Using Subscriptions with NGSI-LD
 
+> [!NOTE]
+>
+> Subscriptions are similar between NGSI-v2 and NGSI-LD. More details
+> on NGSI-LD subscriptions can be found in a
+> [dedicated tutorial](https://github.com/FIWARE/tutorials.Subscriptions/tree/NGSI-LD).
+
 Goto `http://localhost:3000/app/store/urn:ngsi-ld:Building:store001` to display and interact with the Supermarket data.
 
 ### Create a Subscription (Store 1) - Low Stock
@@ -435,7 +441,7 @@ data is obtained from the external registered sources.
 > [!NOTE]
 >
 > Broadly speaking, the default mode of registration in NGSI-v2 can be said to be the equivalent of an **exclusive**
-> registration in NGSI-LD. Examples of the other NGSI-LD registration modes used in NGSI-LD data spacesa and
+> registration in NGSI-LD. Examples of the other NGSI-LD registration modes used in NGSI-LD data spaces and
 > _systems-of-systems_ can be found in a separate,
 > [dedicated tutorial](https://github.com/FIWARE/tutorials.Context-Providers/tree/NGSI-LD).
 >
