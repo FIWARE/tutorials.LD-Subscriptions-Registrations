@@ -205,7 +205,7 @@ git checkout NGSI-v2
 
 > [!NOTE]
 >
-> Subscriptions are similar between NGSI-v2 and NGSI-LD. More details
+> Subscriptions are very similar between NGSI-v2 and NGSI-LD. More details
 > on NGSI-LD subscriptions can be found in a
 > [dedicated tutorial](https://github.com/FIWARE/tutorials.Subscriptions/tree/NGSI-LD).
 
