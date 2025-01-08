@@ -366,7 +366,7 @@ the payloads offered by the two subscriptions will be discussed below.
             },
             "status": "ok"
         },
-        "jsonldContext": "https://fiware.github.io/tutorials.Step-by-Step/tutorials-context.jsonld"
+        "jsonldContext": "http://context/user-context.jsonld"
     }
 ]
 ```
@@ -865,4 +865,4 @@ As can be seen, the updated `tweets` data is also displayed within the supermark
 
 ## License
 
-[MIT](LICENSE) © 2020-2024 FIWARE Foundation e.V.
+[MIT](LICENSE) © 2020-2025 FIWARE Foundation e.V.
