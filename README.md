@@ -205,8 +205,7 @@ git checkout NGSI-v2
 
 > [!NOTE]
 >
-> Subscriptions are very similar between NGSI-v2 and NGSI-LD. More details
-> on NGSI-LD subscriptions can be found in a
+> Subscriptions are very similar between NGSI-v2 and NGSI-LD. More details on NGSI-LD subscriptions can be found in a
 > [dedicated tutorial](https://github.com/FIWARE/tutorials.Subscriptions/tree/NGSI-LD).
 
 Goto `http://localhost:3000/app/store/urn:ngsi-ld:Building:store001` to display and interact with the Supermarket data.
@@ -317,18 +316,12 @@ the payloads offered by the two subscriptions will be discussed below.
                 "type": "Shelf"
             }
         ],
-        "watchedAttributes": [
-            "numberOfItems"
-        ],
+        "watchedAttributes": ["numberOfItems"],
         "q": "numberOfItems<10;locatedIn==%22urn:ngsi-ld:Building:store001%22",
         "status": "active",
         "isActive": true,
         "notification": {
-            "attributes": [
-                "numberOfItems",
-                "stocks",
-                "locatedIn"
-            ],
+            "attributes": ["numberOfItems", "stocks", "locatedIn"],
             "format": "keyValues",
             "endpoint": {
                 "uri": "http://tutorial:3000/subscription/low-stock-store001",
@@ -347,18 +340,12 @@ the payloads offered by the two subscriptions will be discussed below.
                 "type": "Shelf"
             }
         ],
-        "watchedAttributes": [
-            "numberOfItems"
-        ],
+        "watchedAttributes": ["numberOfItems"],
         "q": "numberOfItems<10;locatedIn==%22urn:ngsi-ld:Building:store002%22",
         "status": "active",
         "isActive": true,
         "notification": {
-            "attributes": [
-                "numberOfItems",
-                "stocks",
-                "locatedIn"
-            ],
+            "attributes": ["numberOfItems", "stocks", "locatedIn"],
             "format": "normalized",
             "endpoint": {
                 "uri": "http://tutorial:3000/subscription/low-stock-store002",
